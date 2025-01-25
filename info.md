@@ -10,7 +10,7 @@ Route::get("routeName", [
 ```
 - связать контроллер с роутом
 
-#### Database
+#### [Database](https://www.youtube.com/watch?v=IEcTcOb6Jok&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=5)
 Создавать нужно БД с кодировкой <b>utf8_general_ci</b>
 
 База данных < (вмещает в себе) таблицы
@@ -20,3 +20,13 @@ Route::get("routeName", [
 MySQL Workbench (операции с бд)
 
 Устанавливая соединение в Workbench я соединясь с СУБД в целом, а не с отдельной БД (схемой)
+
+> php artisan make:migration
+- создаёт миграцию
+> php artisan make:model -m
+- создаёт модель и миграцию автоматически
+
+Миграция - файл с описанием изменений, который подтягивает изменения структуры БД из проекта
+в БД (?????????)
+
+
