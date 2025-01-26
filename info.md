@@ -47,3 +47,6 @@ MySQL Workbench (операции с бд)
 
 #### IDE tips
 дабл шифт - глобальный поиск
+
+#### Model
+`Model::find(int id)` - сделать запрос в БД по ид
