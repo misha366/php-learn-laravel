@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -19,6 +17,14 @@ class PostController extends Controller
     {
         $result = "";
         foreach (Post::all() as $post) {
+            $result .= $this->htmlPost($post);
+        }
+        return $result;
+    }
+
+    public function getPublishedPosts() : string {
+        $result = "";
+        foreach (Post::where('is_published', 1)->get() as $post) {
             $result .= $this->htmlPost($post);
         }
         return $result;

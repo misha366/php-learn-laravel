@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::get('/get-first-post', [PostController::class, 'getFirstPost']);
 Route::get('/get-all-posts', [PostController::class, 'getAllPosts']);
+Route::get('/get-published-posts', [PostController::class, 'getPublishedPosts']);
