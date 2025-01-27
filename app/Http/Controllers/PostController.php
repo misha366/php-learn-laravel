@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -15,5 +16,10 @@ class PostController extends Controller
             <h1>#$post->id $post->title</h1>
             <div>$post->content</div>
        ";
+    }
+
+    public function getAllPosts() : Collection
+    {
+        return Post::all();
     }
 }
