@@ -61,3 +61,13 @@ Retrieving - вытягивать
 `Model::where('column', 'value')->get()` - запрос в БД с WHERE
 - <b>метод ->get() всегда оборачивает результат в коллекцию</b>
 - <b>метод ->first() выбирает самую первую строку результата</b>
+
+#### Laravel Validation
+```
+public function createPost(Request $request) : JsonResponse {
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'image' => 'nullable|string'
+    ]);
+```
