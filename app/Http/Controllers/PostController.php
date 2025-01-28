@@ -27,6 +27,11 @@ class PostController extends Controller
 
     const DELETE_IMAGE_FLAG = "DEL_IMG";
 
+    public function getPost(int $id) : string {
+        $post = Post::findOrFail($id);
+        return $this->htmlPost($post);
+    }
+
     public function getFirstPost() : string {
         $post = Post::find(self::FIRST_POST_INDEX);
         return $this->htmlPost($post);
