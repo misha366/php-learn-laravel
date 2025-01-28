@@ -108,6 +108,6 @@ class PostController extends Controller
             <h1>#$post->id $post->title</h1>
             <div>$post->content</div>
             <hr>
-       ";
+        ";
     }
 }
