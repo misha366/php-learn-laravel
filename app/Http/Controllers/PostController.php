@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -21,6 +20,12 @@ class PostController extends Controller
     const TITLE_VALIDATE_CONDITION = "required|string|max:255";
     const CONTENT_VALIDATE_CONDITION = "required|string";
     const IMAGE_VALIDATE_CONDITION = "nullable|string";
+
+    const UPDATE_TITLE_VALIDATE_CONDITION = "string|max:255";
+    const UPDATE_CONTENT_VALIDATE_CONDITION = "string";
+    const UPDATE_IMAGE_VALIDATE_CONDITION = "nullable|string";
+
+    const DELETE_IMAGE_FLAG = "DEL_IMG";
 
     public function getFirstPost() : string {
         $post = Post::find(self::FIRST_POST_INDEX);
@@ -55,6 +60,27 @@ class PostController extends Controller
         ]);
 
         $post = Post::create($validated);
+
+        return response()->json($post);
+    }
+
+    public function updatePost(Request $request, int $id) : JsonResponse {
+        $validated = $request->validate([
+            self::TITLE_KEY => self::UPDATE_TITLE_VALIDATE_CONDITION,
+            self::CONTENT_KEY => self::UPDATE_CONTENT_VALIDATE_CONDITION,
+            self::IMAGE_KEY => self::UPDATE_IMAGE_VALIDATE_CONDITION,
+        ]);
+
+        // Если мы в постмане передали DEL_IMG, то удалить картинку
+        // В нормальном проекте нужно отдельным роутом (или отдельным параметром) удалять картинку,
+        // тк в большинстве случаев редактирование картинки не находится рядом с формой личных данных
+        if (isset($validated[self::IMAGE_KEY])) {
+            $validated[self::IMAGE_KEY] = $validated[self::IMAGE_KEY] === self::DELETE_IMAGE_FLAG ?
+                null : $validated[self::IMAGE_KEY];
+        }
+
+        $post = Post::findOrFail($id);
+        $post->update($validated);
 
         return response()->json($post);
     }

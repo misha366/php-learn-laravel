@@ -23,3 +23,5 @@ Route::get('/get-all-posts', [PostController::class, 'getAllPosts']);
 Route::get('/get-published-posts', [PostController::class, 'getPublishedPosts']);
 
 Route::post('/create-post', [PostController::class, 'createPost']);
+
+Route::patch('/update-post/{id}', [PostController::class, 'updatePost']);
