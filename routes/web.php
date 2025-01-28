@@ -27,3 +27,5 @@ Route::get("/get-post/{id}", [PostController::class, "getPost"]);
 Route::post("/create-post", [PostController::class, "createPost"]);
 
 Route::patch("/update-post/{id}", [PostController::class, "updatePost"]);
+
+Route::delete("/delete-post/{id}", [PostController::class, "deletePost"]);

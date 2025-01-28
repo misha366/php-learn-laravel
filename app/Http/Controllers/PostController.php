@@ -90,6 +90,18 @@ class PostController extends Controller
         return response()->json($post);
     }
 
+    // Это акшн с хард delete, чтобы сделать soft delete надо добавлять поле
+    // is_delete и в этом акшне менять его значение (рекомендуется soft delete)
+
+    // либо
+
+    // Можно использовать встроенный софт delete от ларавел, гайд:
+    // https://youtu.be/H6YyZb3ssS8?si=A6yxXvth4-0fZ_hY&t=182
+    public function deletePost(int $id) : bool {
+        $post = Post::findOrFail($id);
+        return $post->delete();
+    }
+
     // Accepts a Post object and returns it in html form
     private function htmlPost(Post $post) : string {
         return "
