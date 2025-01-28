@@ -33,7 +33,7 @@ class PostController extends Controller
     }
 
     public function getFirstPost() : string {
-        $post = Post::find(self::FIRST_POST_INDEX);
+        $post = Post::findOrFail(self::FIRST_POST_INDEX);
         return $this->htmlPost($post);
     }
 
