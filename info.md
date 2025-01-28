@@ -10,7 +10,7 @@
 ```
 Route::get("routeName", [
     ClassController::class,
-    'handlerName'
+    "handlerName"
 ]);
 ```
 - связать контроллер с роутом
@@ -60,7 +60,7 @@ Retrieving - вытягивать
 !!`Model::findOrFail(int id)` - сделать запрос в БД по ид и кинуть исключение вместо null,
 если в ответе ничего нету
 `Model::all()` - возвращает все строки из БД в виде Collection
-`Model::where('column', 'value')->get()` - запрос в БД с WHERE
+`Model::where("column", "value")->get()` - запрос в БД с WHERE
 - <b>метод ->get() всегда оборачивает результат в коллекцию</b>
 - <b>метод ->first() выбирает самую первую строку результата</b>
 
@@ -68,8 +68,8 @@ Retrieving - вытягивать
 ```
 public function createPost(Request $request) : JsonResponse {
     $validated = $request->validate([
-        'title' => 'required|string|max:255',
-        'content' => 'required|string',
-        'image' => 'nullable|string'
+        "title" => "required|string|max:255",
+        "content" => "required|string",
+        "image" => "nullable|string"
     ]);
 ```
