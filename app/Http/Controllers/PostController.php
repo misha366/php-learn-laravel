@@ -9,72 +9,84 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
-    const FIRST_POST_INDEX = 1;
-    const IS_PUBLISHED_COLUMN_NAME = "is_published";
-    const IS_PUBLISHED_COLUMN_CONDITION_VALUE = 1;
 
-    const REQUEST_VALIDATION_TITLE_KEY = "title";
-    const REQUEST_VALIDATION_CONTENT_KEY = "content";
-    const REQUEST_VALIDATION_IMAGE_KEY = "image";
+    /*
+     * View Names
+     * */
+    const VIEW_NAME_RENDER_POSTS = "renderposts";
 
-    const TITLE_VALIDATE_CONDITION = "required|string|max:255";
-    const CONTENT_VALIDATE_CONDITION = "required|string";
-    const IMAGE_VALIDATE_CONDITION = "nullable|string";
+    /*
+     * View Data
+     * */
+    const VIEW_DATA_KEY_POSTS = "posts";
+    const VIEW_DATA_KEY_TITLE = "title";
 
-    const UPDATE_TITLE_VALIDATE_CONDITION = "string|max:255";
-    const UPDATE_CONTENT_VALIDATE_CONDITION = "string";
-    const UPDATE_IMAGE_VALIDATE_CONDITION = "nullable|string";
+    const VIEW_TITLE_GET_ALL_POSTS = "All posts";
+    const VIEW_TITLE_PUBLISHED_POSTS = "Published posts";
 
+    /*
+     * Laravel Request Validation
+     * */
+    const VALIDATION_KEY_TITLE = "title";
+    const VALIDATION_KEY_CONTENT = "content";
+    const VALIDATION_KEY_IMAGE = "image";
+    const VALIDATE_CONDITION_CREATE_TITLE = "required|string|max:255";
+    const VALIDATE_CONDITION_CREATE_CONTENT = "required|string";
+    const VALIDATE_CONDITION_CREATE_IMAGE = "nullable|string";
+    const VALIDATE_CONDITION_UPDATE_TITLE = "string|max:255";
+    const VALIDATE_CONDITION_UPDATE_CONTENT = "string";
+    const VALIDATE_CONDITION_UPDATE_IMAGE = "nullable|string";
+
+    /*
+     * Other
+     * */
+    const POST_INDEX_FIRST = 1;
+    const COLUMN_NAME_IS_PUBLISHED = "is_published";
+    const COLUMN_IS_PUBLISHED_WHERE_CONDITION = 1;
     const DELETE_IMAGE_FLAG = "DEL_IMG";
 
-    const RENDER_POSTS_VIEW_NAME = "renderposts";
-    const VIEW_DATA_POSTS_ARRAY_KEY = "posts";
-    const VIEW_DATA_TITLE_ARRAY_KEY = "title";
-
-    const VIEW_DATA_GET_ALL_POSTS_TITLE = "All posts";
-    const VIEW_DATA_GET_PUBLISHED_POSTS_TITLE = "Published posts";
 
     public function getPost(int $id) : View {
         $post = Post::findOrFail($id);
-        return view(self::RENDER_POSTS_VIEW_NAME, [
-            self::VIEW_DATA_POSTS_ARRAY_KEY => [$post],
-            self::VIEW_DATA_TITLE_ARRAY_KEY => $post->title,
+        return view(self::VIEW_NAME_RENDER_POSTS, [
+            self::VIEW_DATA_KEY_POSTS => [$post],
+            self::VIEW_DATA_KEY_TITLE => $post->title,
         ]);
     }
 
     public function getFirstPost() : View {
-        $post = Post::findOrFail(self::FIRST_POST_INDEX);
-        return view(self::RENDER_POSTS_VIEW_NAME, [
-            self::VIEW_DATA_POSTS_ARRAY_KEY => [$post],
-            self::VIEW_DATA_TITLE_ARRAY_KEY => $post->title,
+        $post = Post::findOrFail(self::POST_INDEX_FIRST);
+        return view(self::VIEW_NAME_RENDER_POSTS, [
+            self::VIEW_DATA_KEY_POSTS => [$post],
+            self::VIEW_DATA_KEY_TITLE => $post->title,
         ]);
     }
 
     public function getAllPosts() : View
     {
-        return view(self::RENDER_POSTS_VIEW_NAME, [
-            self::VIEW_DATA_POSTS_ARRAY_KEY => Post::all(),
-            self::VIEW_DATA_TITLE_ARRAY_KEY => self::VIEW_DATA_GET_ALL_POSTS_TITLE,
+        return view(self::VIEW_NAME_RENDER_POSTS, [
+            self::VIEW_DATA_KEY_POSTS => Post::all(),
+            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_GET_ALL_POSTS,
         ]);
     }
 
     public function getPublishedPosts() : View {
         $posts = Post::where(
-            self::IS_PUBLISHED_COLUMN_NAME,
-            self::IS_PUBLISHED_COLUMN_CONDITION_VALUE
+            self::COLUMN_NAME_IS_PUBLISHED,
+            self::COLUMN_IS_PUBLISHED_WHERE_CONDITION
         )->get();
 
-        return view(self::RENDER_POSTS_VIEW_NAME, [
-            self::VIEW_DATA_POSTS_ARRAY_KEY => $posts,
-            self::VIEW_DATA_TITLE_ARRAY_KEY => self::VIEW_DATA_GET_PUBLISHED_POSTS_TITLE,
+        return view(self::VIEW_NAME_RENDER_POSTS, [
+            self::VIEW_DATA_KEY_POSTS => $posts,
+            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_PUBLISHED_POSTS,
         ]);
     }
 
     public function createPost(Request $request) : JsonResponse {
         $validated = $request->validate([
-            self::REQUEST_VALIDATION_TITLE_KEY => self::TITLE_VALIDATE_CONDITION,
-            self::REQUEST_VALIDATION_CONTENT_KEY => self::CONTENT_VALIDATE_CONDITION,
-            self::REQUEST_VALIDATION_IMAGE_KEY => self::IMAGE_VALIDATE_CONDITION,
+            self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_CREATE_TITLE,
+            self::VALIDATION_KEY_CONTENT => self::VALIDATE_CONDITION_CREATE_CONTENT,
+            self::VALIDATION_KEY_IMAGE => self::VALIDATE_CONDITION_CREATE_IMAGE,
         ]);
 
         $post = Post::create($validated);
@@ -84,17 +96,18 @@ class PostController extends Controller
 
     public function updatePost(Request $request, int $id) : JsonResponse {
         $validated = $request->validate([
-            self::REQUEST_VALIDATION_TITLE_KEY => self::UPDATE_TITLE_VALIDATE_CONDITION,
-            self::REQUEST_VALIDATION_CONTENT_KEY => self::UPDATE_CONTENT_VALIDATE_CONDITION,
-            self::REQUEST_VALIDATION_IMAGE_KEY => self::UPDATE_IMAGE_VALIDATE_CONDITION,
+            self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_UPDATE_TITLE,
+            self::VALIDATION_KEY_CONTENT => self::VALIDATE_CONDITION_UPDATE_CONTENT,
+            self::VALIDATION_KEY_IMAGE => self::VALIDATE_CONDITION_UPDATE_IMAGE,
         ]);
 
         // Если мы в постмане передали DEL_IMG, то удалить картинку
         // В нормальном проекте нужно отдельным роутом (или отдельным параметром) удалять картинку,
         // тк в большинстве случаев редактирование картинки не находится рядом с формой личных данных
-        if (isset($validated[self::REQUEST_VALIDATION_IMAGE_KEY])) {
-            $validated[self::REQUEST_VALIDATION_IMAGE_KEY] = $validated[self::REQUEST_VALIDATION_IMAGE_KEY] === self::DELETE_IMAGE_FLAG ?
-                null : $validated[self::REQUEST_VALIDATION_IMAGE_KEY];
+        if (isset($validated[self::VALIDATION_KEY_IMAGE])) {
+            $validated[self::VALIDATION_KEY_IMAGE] =
+                ($validated[self::VALIDATION_KEY_IMAGE] === self::DELETE_IMAGE_FLAG) ? null
+                    : $validated[self::VALIDATION_KEY_IMAGE];
         }
 
         $post = Post::findOrFail($id);
