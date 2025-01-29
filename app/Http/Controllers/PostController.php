@@ -13,9 +13,9 @@ class PostController extends Controller
     const IS_PUBLISHED_COLUMN_NAME = "is_published";
     const IS_PUBLISHED_COLUMN_CONDITION_VALUE = 1;
 
-    const TITLE_KEY = "title";
-    const CONTENT_KEY = "content";
-    const IMAGE_KEY = "image";
+    const REQUEST_VALIDATION_TITLE_KEY = "title";
+    const REQUEST_VALIDATION_CONTENT_KEY = "content";
+    const REQUEST_VALIDATION_IMAGE_KEY = "image";
 
     const TITLE_VALIDATE_CONDITION = "required|string|max:255";
     const CONTENT_VALIDATE_CONDITION = "required|string";
@@ -72,9 +72,9 @@ class PostController extends Controller
 
     public function createPost(Request $request) : JsonResponse {
         $validated = $request->validate([
-            self::TITLE_KEY => self::TITLE_VALIDATE_CONDITION,
-            self::CONTENT_KEY => self::CONTENT_VALIDATE_CONDITION,
-            self::IMAGE_KEY => self::IMAGE_VALIDATE_CONDITION,
+            self::REQUEST_VALIDATION_TITLE_KEY => self::TITLE_VALIDATE_CONDITION,
+            self::REQUEST_VALIDATION_CONTENT_KEY => self::CONTENT_VALIDATE_CONDITION,
+            self::REQUEST_VALIDATION_IMAGE_KEY => self::IMAGE_VALIDATE_CONDITION,
         ]);
 
         $post = Post::create($validated);
@@ -84,17 +84,17 @@ class PostController extends Controller
 
     public function updatePost(Request $request, int $id) : JsonResponse {
         $validated = $request->validate([
-            self::TITLE_KEY => self::UPDATE_TITLE_VALIDATE_CONDITION,
-            self::CONTENT_KEY => self::UPDATE_CONTENT_VALIDATE_CONDITION,
-            self::IMAGE_KEY => self::UPDATE_IMAGE_VALIDATE_CONDITION,
+            self::REQUEST_VALIDATION_TITLE_KEY => self::UPDATE_TITLE_VALIDATE_CONDITION,
+            self::REQUEST_VALIDATION_CONTENT_KEY => self::UPDATE_CONTENT_VALIDATE_CONDITION,
+            self::REQUEST_VALIDATION_IMAGE_KEY => self::UPDATE_IMAGE_VALIDATE_CONDITION,
         ]);
 
         // Если мы в постмане передали DEL_IMG, то удалить картинку
         // В нормальном проекте нужно отдельным роутом (или отдельным параметром) удалять картинку,
         // тк в большинстве случаев редактирование картинки не находится рядом с формой личных данных
-        if (isset($validated[self::IMAGE_KEY])) {
-            $validated[self::IMAGE_KEY] = $validated[self::IMAGE_KEY] === self::DELETE_IMAGE_FLAG ?
-                null : $validated[self::IMAGE_KEY];
+        if (isset($validated[self::REQUEST_VALIDATION_IMAGE_KEY])) {
+            $validated[self::REQUEST_VALIDATION_IMAGE_KEY] = $validated[self::REQUEST_VALIDATION_IMAGE_KEY] === self::DELETE_IMAGE_FLAG ?
+                null : $validated[self::REQUEST_VALIDATION_IMAGE_KEY];
         }
 
         $post = Post::findOrFail($id);
