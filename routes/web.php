@@ -15,11 +15,10 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get("/", [MainController::class, "index"]);
-
-Route::get("/get-first-post", [PostController::class, "getFirstPost"]);
-Route::get("/get-all-posts", [PostController::class, "getAllPosts"]);
-Route::get("/get-published-posts", [PostController::class, "getPublishedPosts"]);
+Route::get("/", [MainController::class, "index"])->name("main.home");
+Route::get("/get-first-post", [PostController::class, "getFirstPost"])->name("post.getFirstPost");
+Route::get("/get-all-posts", [PostController::class, "getAllPosts"])->name("post.getAllPosts");
+Route::get("/get-published-posts", [PostController::class, "getPublishedPosts"])->name("post.getPublishedPosts");
 
 Route::get("/get-post/{id}", [PostController::class, "getPost"]);
 
