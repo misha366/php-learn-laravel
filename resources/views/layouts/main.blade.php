@@ -22,8 +22,8 @@
 
         <ul>
             <li><a href="{{ route("main.home") }}">Home</a></li>
-            <li><a href="{{ route("post.getFirstPost") }}">All Posts</a></li>
-            <li><a href="{{ route("post.getAllPosts") }}">First Post</a></li>
+            <li><a href="{{ route("post.getAllPosts") }}">All Posts</a></li>
+            <li><a href="{{ route("post.getFirstPost") }}">First Post</a></li>
             <li><a href="{{ route("post.getPublishedPosts") }}">Published Posts</a></li>
         </ul>
 
