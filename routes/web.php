@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
@@ -14,9 +15,7 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get("/", function () {
-    return view("welcome");
-});
+Route::get("/", [MainController::class, "index"]);
 
 Route::get("/get-first-post", [PostController::class, "getFirstPost"]);
 Route::get("/get-all-posts", [PostController::class, "getAllPosts"]);

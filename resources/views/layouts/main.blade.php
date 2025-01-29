@@ -18,7 +18,7 @@
 </head>
 <body>
 
-    @yield("renderposts")
+    @yield("content")
 
 </body>
 </html>
