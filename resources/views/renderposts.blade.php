@@ -11,7 +11,7 @@
 @else
     @foreach($posts as $post)
         <h3>
-            <a href="/get-post/{{ $post->id  }}">
+            <a href="{{ route("post.getPost", ["id" => $post->id]) }}">
                 #{{ $post->id }} {{ $post->title }}
             </a>
         </h3>

@@ -20,7 +20,7 @@ Route::get("/get-first-post", [PostController::class, "getFirstPost"])->name("po
 Route::get("/get-all-posts", [PostController::class, "getAllPosts"])->name("post.getAllPosts");
 Route::get("/get-published-posts", [PostController::class, "getPublishedPosts"])->name("post.getPublishedPosts");
 
-Route::get("/get-post/{id}", [PostController::class, "getPost"]);
+Route::get("/get-post/{id}", [PostController::class, "getPost"])->name("post.getPost");
 
 Route::post("/create-post", [PostController::class, "createPost"]);
 
