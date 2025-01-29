@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -89,7 +90,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function createPost(Request $request) : JsonResponse {
+    public function createPost(Request $request) : RedirectResponse
+    {
         $validated = $request->validate([
             self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_CREATE_TITLE,
             self::VALIDATION_KEY_CONTENT => self::VALIDATE_CONDITION_CREATE_CONTENT,
@@ -98,7 +100,7 @@ class PostController extends Controller
 
         $post = Post::create($validated);
 
-        return response()->json($post);
+        return redirect()->route("post.getPost", ["id" => $post->id]);
     }
 
     public function updatePost(Request $request, int $id) : JsonResponse {

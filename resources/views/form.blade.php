@@ -7,6 +7,12 @@
     }
 </style>
 
-    Form
+    <form action="{{ route("post.createPostAction") }}" method="POST">
+        <input type="text" name="title" placeholder="title">
+        <input type="text" name="content" placeholder="content">
+        <input type="text" name="image" placeholder="image">
+
+        <input type="submit">
+    </form>
 
 @endsection
