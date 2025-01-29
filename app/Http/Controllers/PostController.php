@@ -14,6 +14,7 @@ class PostController extends Controller
      * View Names
      * */
     const VIEW_NAME_RENDER_POSTS = "renderposts";
+    const VIEW_NAME_FORM = "form";
 
     /*
      * View Data
@@ -23,6 +24,7 @@ class PostController extends Controller
 
     const VIEW_TITLE_GET_ALL_POSTS = "All posts";
     const VIEW_TITLE_PUBLISHED_POSTS = "Published posts";
+    const VIEW_TITLE_CREATE_POST = "Create post";
 
     /*
      * Laravel Request Validation
@@ -45,6 +47,11 @@ class PostController extends Controller
     const COLUMN_IS_PUBLISHED_WHERE_CONDITION = 1;
     const DELETE_IMAGE_FLAG = "DEL_IMG";
 
+    public function getCreatePostForm() : View {
+        return view(self::VIEW_NAME_FORM, [
+            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST
+        ]);
+    }
 
     public function getPost(int $id) : View {
         $post = Post::findOrFail($id);

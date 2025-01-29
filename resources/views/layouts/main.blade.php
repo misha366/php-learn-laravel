@@ -26,7 +26,7 @@
 
     <div class="float">
         <div class="float__circle">
-            <a href="#" class="float__link">
+            <a href="{{ route("post.createPost") }}" class="float__link">
                 <span class="float__link-wrapper">
                     ADD
                 </span>
