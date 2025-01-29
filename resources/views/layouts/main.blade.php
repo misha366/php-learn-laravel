@@ -6,15 +6,11 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $title }} - POSTS SITE</title>
-    <style>
-        body {
-            background: #a0aec0;
-            margin: 10px 15%;
-        }
-        * {
-            font-family: Roboto, sans-serif;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset("style/style.css") }}">
 </head>
 <body>
 
@@ -26,38 +22,17 @@
             <li><a href="{{ route("post.getFirstPost") }}">First Post</a></li>
             <li><a href="{{ route("post.getPublishedPosts") }}">Published Posts</a></li>
         </ul>
-
-        <style>
-            nav ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-            }
-
-            nav ul li {
-                margin-right: 15px;
-            }
-
-            nav ul li:last-child {
-                margin-right: 0;
-            }
-
-            nav ul li a {
-                color: #ef4444;
-                transition: .2s ease-in;
-                text-decoration: none;
-            }
-
-
-            nav ul li a:hover {
-                color: rgba(239, 68, 68, 0.75);
-                transition: .2s ease-in;
-            }
-
-        </style>
     </nav>
+
+    <div class="float">
+        <div class="float__circle">
+            <a href="#" class="float__link">
+                <span class="float__link-wrapper">
+                    ADD
+                </span>
+            </a>
+        </div>
+    </div>
 
     @yield("content")
 
