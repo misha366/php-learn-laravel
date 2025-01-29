@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PostController extends Controller
 {
     const FIRST_POST_INDEX = 1;
-    const EMPTY_STRING = "";
     const IS_PUBLISHED_COLUMN_NAME = "is_published";
     const IS_PUBLISHED_COLUMN_CONDITION_VALUE = 1;
 
@@ -27,34 +27,47 @@ class PostController extends Controller
 
     const DELETE_IMAGE_FLAG = "DEL_IMG";
 
-    public function getPost(int $id) : string {
+    const RENDER_POSTS_VIEW_NAME = "renderposts";
+    const VIEW_DATA_POSTS_ARRAY_KEY = "posts";
+    const VIEW_DATA_TITLE_ARRAY_KEY = "title";
+
+    const VIEW_DATA_GET_ALL_POSTS_TITLE = "All posts";
+    const VIEW_DATA_GET_PUBLISHED_POSTS_TITLE = "Published posts";
+
+    public function getPost(int $id) : View {
         $post = Post::findOrFail($id);
-        return $this->htmlPost($post);
+        return view(self::RENDER_POSTS_VIEW_NAME, [
+            self::VIEW_DATA_POSTS_ARRAY_KEY => [$post],
+            self::VIEW_DATA_TITLE_ARRAY_KEY => $post->title,
+        ]);
     }
 
-    public function getFirstPost() : string {
+    public function getFirstPost() : View {
         $post = Post::findOrFail(self::FIRST_POST_INDEX);
-        return $this->htmlPost($post);
+        return view(self::RENDER_POSTS_VIEW_NAME, [
+            self::VIEW_DATA_POSTS_ARRAY_KEY => [$post],
+            self::VIEW_DATA_TITLE_ARRAY_KEY => $post->title,
+        ]);
     }
 
-    public function getAllPosts() : string
+    public function getAllPosts() : View
     {
-        $result = self::EMPTY_STRING;
-        foreach (Post::all() as $post) {
-            $result .= $this->htmlPost($post);
-        }
-        return $result;
+        return view(self::RENDER_POSTS_VIEW_NAME, [
+            self::VIEW_DATA_POSTS_ARRAY_KEY => Post::all(),
+            self::VIEW_DATA_TITLE_ARRAY_KEY => self::VIEW_DATA_GET_ALL_POSTS_TITLE,
+        ]);
     }
 
-    public function getPublishedPosts() : string {
-        $result = self::EMPTY_STRING;
-        foreach (Post::where(
+    public function getPublishedPosts() : View {
+        $posts = Post::where(
             self::IS_PUBLISHED_COLUMN_NAME,
             self::IS_PUBLISHED_COLUMN_CONDITION_VALUE
-        )->get() as $post) {
-            $result .= $this->htmlPost($post);
-        }
-        return $result;
+        )->get();
+
+        return view(self::RENDER_POSTS_VIEW_NAME, [
+            self::VIEW_DATA_POSTS_ARRAY_KEY => $posts,
+            self::VIEW_DATA_TITLE_ARRAY_KEY => self::VIEW_DATA_GET_PUBLISHED_POSTS_TITLE,
+        ]);
     }
 
     public function createPost(Request $request) : JsonResponse {
@@ -100,14 +113,5 @@ class PostController extends Controller
     public function deletePost(int $id) : bool {
         $post = Post::findOrFail($id);
         return $post->delete();
-    }
-
-    // Accepts a Post object and returns it in html form
-    private function htmlPost(Post $post) : string {
-        return "
-            <h1>#$post->id $post->title</h1>
-            <div>$post->content</div>
-            <hr>
-        ";
     }
 }
