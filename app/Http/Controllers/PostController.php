@@ -142,8 +142,9 @@ class PostController extends Controller
 
     // Можно использовать встроенный софт delete от ларавел, гайд:
     // https://youtu.be/H6YyZb3ssS8?si=A6yxXvth4-0fZ_hY&t=182
-    public function deletePost(int $id) : bool {
+    public function deletePost(int $id) : RedirectResponse {
         $post = Post::findOrFail($id);
-        return $post->delete();
+        $post->delete();
+        return redirect()->route("post.getAllPosts");
     }
 }
