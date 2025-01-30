@@ -25,6 +25,7 @@ Route::get("/get-post/{id}", [PostController::class, "getPost"])->name("post.get
 Route::get("/create-post", [PostController::class, "getCreatePostForm"])->name("post.createPostView");
 Route::post("/create-post", [PostController::class, "createPost"])->name("post.createPostAction");
 
-Route::patch("/update-post/{id}", [PostController::class, "updatePost"]);
+Route::get("/update-post/{id}", [PostController::class, "getUpdatePostForm"])->name("post.updatePostView");
+Route::patch("/update-post/{id}", [PostController::class, "updatePost"])->name("post.updatePostAction");
 
 Route::delete("/delete-post/{id}", [PostController::class, "deletePost"]);

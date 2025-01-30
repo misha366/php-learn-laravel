@@ -50,7 +50,17 @@ class PostController extends Controller
 
     public function getCreatePostForm() : View {
         return view(self::VIEW_NAME_FORM, [
-            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST
+            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
+            "mode" => "CREATE"
+        ]);
+    }
+
+    public function getUpdatePostForm(int $id) : View {
+        $post = Post::findOrFail($id);
+        return view(self::VIEW_NAME_FORM, [
+            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
+            "mode" => "UPDATE",
+            "post" => $post
         ]);
     }
 
@@ -103,7 +113,7 @@ class PostController extends Controller
         return redirect()->route("post.getPost", ["id" => $post->id]);
     }
 
-    public function updatePost(Request $request, int $id) : JsonResponse {
+    public function updatePost(Request $request, int $id) : RedirectResponse {
         $validated = $request->validate([
             self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_UPDATE_TITLE,
             self::VALIDATION_KEY_CONTENT => self::VALIDATE_CONDITION_UPDATE_CONTENT,
@@ -122,7 +132,7 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->update($validated);
 
-        return response()->json($post);
+        return redirect()->route("post.getPost", ["id" => $post->id]);
     }
 
     // Это акшн с хард delete, чтобы сделать soft delete надо добавлять поле
