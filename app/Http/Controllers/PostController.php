@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -22,6 +21,8 @@ class PostController extends Controller
      * */
     const VIEW_DATA_KEY_POSTS = "posts";
     const VIEW_DATA_KEY_TITLE = "title";
+    const VIEW_DATA_KEY_MODE = "mode";
+    const VIEW_DATA_KEY_POST = "post";
 
     const VIEW_TITLE_GET_ALL_POSTS = "All posts";
     const VIEW_TITLE_PUBLISHED_POSTS = "Published posts";
@@ -41,17 +42,26 @@ class PostController extends Controller
     const VALIDATE_CONDITION_UPDATE_IMAGE = "nullable|string";
 
     /*
+     * Routes
+     * */
+    const ROUTE_GET_POST = "post.getPost";
+    const ROUTE_GET_ALL_POSTS = "post.getAllPosts";
+    const ROUTE_ARGUMENT_ID = "id";
+
+    /*
      * Other
      * */
     const POST_INDEX_FIRST = 1;
     const COLUMN_NAME_IS_PUBLISHED = "is_published";
     const COLUMN_IS_PUBLISHED_WHERE_CONDITION = 1;
     const DELETE_IMAGE_FLAG = "DEL_IMG";
+    const FORM_MODE_UPDATE = "UPDATE";
+    const FORM_MODE_CREATE = "CREATE";
 
     public function getCreatePostForm() : View {
         return view(self::VIEW_NAME_FORM, [
             self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
-            "mode" => "CREATE"
+            self::VIEW_DATA_KEY_MODE => self::FORM_MODE_CREATE
         ]);
     }
 
@@ -59,8 +69,8 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         return view(self::VIEW_NAME_FORM, [
             self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
-            "mode" => "UPDATE",
-            "post" => $post
+            self::VIEW_DATA_KEY_MODE => self::FORM_MODE_UPDATE,
+            self::VIEW_DATA_KEY_POST => $post
         ]);
     }
 
@@ -110,7 +120,9 @@ class PostController extends Controller
 
         $post = Post::create($validated);
 
-        return redirect()->route("post.getPost", ["id" => $post->id]);
+        return redirect()->route(self::ROUTE_GET_POST, [
+            self::ROUTE_ARGUMENT_ID => $post->id
+        ]);
     }
 
     public function updatePost(Request $request, int $id) : RedirectResponse {
@@ -132,7 +144,9 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->update($validated);
 
-        return redirect()->route("post.getPost", ["id" => $post->id]);
+        return redirect()->route(self::ROUTE_GET_POST, [
+            self::ROUTE_ARGUMENT_ID => $post->id
+        ]);
     }
 
     // Это акшн с хард delete, чтобы сделать soft delete надо добавлять поле
@@ -143,8 +157,7 @@ class PostController extends Controller
     // Можно использовать встроенный софт delete от ларавел, гайд:
     // https://youtu.be/H6YyZb3ssS8?si=A6yxXvth4-0fZ_hY&t=182
     public function deletePost(int $id) : RedirectResponse {
-        $post = Post::findOrFail($id);
-        $post->delete();
-        return redirect()->route("post.getAllPosts");
+        Post::findOrFail($id)->delete();
+        return redirect()->route(self::ROUTE_GET_ALL_POSTS);
     }
 }
