@@ -84,3 +84,6 @@ public function createPost(Request $request) : JsonResponse {
         "image" => "nullable|string"
     ]);
 ```
+
+#### Bootstrap
+https://www.youtube.com/watch?v=sdpaqoveghk&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=17
