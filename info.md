@@ -59,7 +59,7 @@ Retrieving - вытягивать
 
 `Model::find(int id)` - сделать запрос в БД по ид
 
-!!`Model::findOrFail(int id)` - сделать запрос в БД по ид и кинуть исключение вместо null,
+!!`Model::findOrFail(int id)` - сделать запрос в БД по ид и кинуть исключение 404 вместо null,
 если в ответе ничего нету
 
 `Model::all()` - возвращает все строки из БД в виде Collection
@@ -87,3 +87,8 @@ public function createPost(Request $request) : JsonResponse {
 
 #### Bootstrap
 https://www.youtube.com/watch?v=sdpaqoveghk&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=17
+
+#### Laravel соглашение по неймингу роутов
+https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers
+
+Структура: https://youtu.be/8VJ7tylaaFY?si=ZAFQAFIbn4X-axgS&t=383
