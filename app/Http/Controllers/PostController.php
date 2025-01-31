@@ -9,155 +9,91 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
-
-    /*
-     * View Names
-     * */
-    const VIEW_NAME_RENDER_POSTS = "renderposts";
-    const VIEW_NAME_FORM = "form";
-
-    /*
-     * View Data
-     * */
-    const VIEW_DATA_KEY_POSTS = "posts";
-    const VIEW_DATA_KEY_TITLE = "title";
-    const VIEW_DATA_KEY_MODE = "mode";
-    const VIEW_DATA_KEY_POST = "post";
-
-    const VIEW_TITLE_GET_ALL_POSTS = "All posts";
-    const VIEW_TITLE_PUBLISHED_POSTS = "Published posts";
-    const VIEW_TITLE_CREATE_POST = "Create post";
-
-    /*
-     * Laravel Request Validation
-     * */
-    const VALIDATION_KEY_TITLE = "title";
-    const VALIDATION_KEY_CONTENT = "content";
-    const VALIDATION_KEY_IMAGE = "image";
-    const VALIDATE_CONDITION_CREATE_TITLE = "required|string|max:255";
-    const VALIDATE_CONDITION_CREATE_CONTENT = "required|string";
-    const VALIDATE_CONDITION_CREATE_IMAGE = "nullable|string";
-    const VALIDATE_CONDITION_UPDATE_TITLE = "string|max:255";
-    const VALIDATE_CONDITION_UPDATE_CONTENT = "string";
-    const VALIDATE_CONDITION_UPDATE_IMAGE = "nullable|string";
-
-    /*
-     * Routes
-     * */
-    const ROUTE_GET_POST = "post.getPost";
-    const ROUTE_GET_ALL_POSTS = "post.getAllPosts";
-    const ROUTE_ARGUMENT_ID = "id";
-
-    /*
-     * Other
-     * */
-    const POST_INDEX_FIRST = 1;
-    const COLUMN_NAME_IS_PUBLISHED = "is_published";
-    const COLUMN_IS_PUBLISHED_WHERE_CONDITION = 1;
-    const DELETE_IMAGE_FLAG = "DEL_IMG";
-    const FORM_MODE_UPDATE = "UPDATE";
-    const FORM_MODE_CREATE = "CREATE";
-
     public function create() : View {
-        return view(self::VIEW_NAME_FORM, [
-            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
-            self::VIEW_DATA_KEY_MODE => self::FORM_MODE_CREATE
+        return view("form", [
+            "title" => "Create post",
+            "mode" => "CREATE"
         ]);
     }
 
     public function edit(int $id) : View {
         $post = Post::findOrFail($id);
-        return view(self::VIEW_NAME_FORM, [
-            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
-            self::VIEW_DATA_KEY_MODE => self::FORM_MODE_UPDATE,
-            self::VIEW_DATA_KEY_POST => $post
+        return view("form", [
+            "title" => "Create post",
+            "mode" => "UPDATE",
+            "post" => $post
         ]);
     }
 
     public function show(int $id) : View {
         $post = Post::findOrFail($id);
-        return view(self::VIEW_NAME_RENDER_POSTS, [
-            self::VIEW_DATA_KEY_POSTS => [$post],
-            self::VIEW_DATA_KEY_TITLE => $post->title,
+        return view("renderposts", [
+            "posts" => [$post],
+            "title" => $post->title,
         ]);
     }
 
     public function getFirstPost() : View {
-        $post = Post::findOrFail(self::POST_INDEX_FIRST);
-        return view(self::VIEW_NAME_RENDER_POSTS, [
-            self::VIEW_DATA_KEY_POSTS => [$post],
-            self::VIEW_DATA_KEY_TITLE => $post->title,
+        $post = Post::findOrFail(1);
+        return view("renderposts", [
+            "posts" => [$post],
+            "title" => $post->title,
         ]);
     }
 
     public function index() : View
     {
-        return view(self::VIEW_NAME_RENDER_POSTS, [
-            self::VIEW_DATA_KEY_POSTS => Post::all(),
-            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_GET_ALL_POSTS,
+        return view("renderposts", [
+            "posts" => Post::all(),
+            "title" => "All posts",
         ]);
     }
 
     public function getPublishedPosts() : View {
-        $posts = Post::where(
-            self::COLUMN_NAME_IS_PUBLISHED,
-            self::COLUMN_IS_PUBLISHED_WHERE_CONDITION
-        )->get();
+        $posts = Post::where("is_published", 1)->get();
 
-        return view(self::VIEW_NAME_RENDER_POSTS, [
-            self::VIEW_DATA_KEY_POSTS => $posts,
-            self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_PUBLISHED_POSTS,
+        return view("renderposts", [
+            "posts" => $posts,
+            "title" => "Published posts",
         ]);
     }
 
     public function store(Request $request) : RedirectResponse
     {
         $validated = $request->validate([
-            self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_CREATE_TITLE,
-            self::VALIDATION_KEY_CONTENT => self::VALIDATE_CONDITION_CREATE_CONTENT,
-            self::VALIDATION_KEY_IMAGE => self::VALIDATE_CONDITION_CREATE_IMAGE,
+            "title" => "required|string|max:255",
+            "content" => "required|string",
+            "image" => "nullable|string",
         ]);
 
         $post = Post::create($validated);
 
-        return redirect()->route(self::ROUTE_GET_POST, [
-            self::ROUTE_ARGUMENT_ID => $post->id
+        return redirect()->route("post.getPost", [
+            "id" => $post->id
         ]);
     }
 
     public function update(Request $request, int $id) : RedirectResponse {
         $validated = $request->validate([
-            self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_UPDATE_TITLE,
-            self::VALIDATION_KEY_CONTENT => self::VALIDATE_CONDITION_UPDATE_CONTENT,
-            self::VALIDATION_KEY_IMAGE => self::VALIDATE_CONDITION_UPDATE_IMAGE,
+            "title" => "string|max:255",
+            "content" => "string",
+            "image" => "nullable|string",
         ]);
 
-        // Если мы в постмане передали DEL_IMG, то удалить картинку
-        // В нормальном проекте нужно отдельным роутом (или отдельным параметром) удалять картинку,
-        // тк в большинстве случаев редактирование картинки не находится рядом с формой личных данных
-        if (isset($validated[self::VALIDATION_KEY_IMAGE])) {
-            $validated[self::VALIDATION_KEY_IMAGE] =
-                ($validated[self::VALIDATION_KEY_IMAGE] === self::DELETE_IMAGE_FLAG) ? null
-                    : $validated[self::VALIDATION_KEY_IMAGE];
+        if (isset($validated["image"])) {
+            $validated["image"] = ($validated["image"] === "DEL_IMG") ? null : $validated["image"];
         }
 
         $post = Post::findOrFail($id);
         $post->update($validated);
 
-        return redirect()->route(self::ROUTE_GET_POST, [
-            self::ROUTE_ARGUMENT_ID => $post->id
+        return redirect()->route("post.getPost", [
+            "id" => $post->id
         ]);
     }
 
-    // Это акшн с хард delete, чтобы сделать soft delete надо добавлять поле
-    // is_delete и в этом акшне менять его значение (рекомендуется soft delete)
-
-    // либо
-
-    // Можно использовать встроенный софт delete от ларавел, гайд:
-    // https://youtu.be/H6YyZb3ssS8?si=A6yxXvth4-0fZ_hY&t=182
     public function destroy(int $id) : RedirectResponse {
         Post::findOrFail($id)->delete();
-        return redirect()->route(self::ROUTE_GET_ALL_POSTS);
+        return redirect()->route("post.getAllPosts");
     }
 }
