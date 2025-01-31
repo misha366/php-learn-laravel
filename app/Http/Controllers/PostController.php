@@ -68,7 +68,7 @@ class PostController extends Controller
 
         $post = Post::create($validated);
 
-        return redirect()->route("post.getPost", [
+        return redirect()->route("posts.show", [
             "id" => $post->id
         ]);
     }
@@ -87,13 +87,13 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->update($validated);
 
-        return redirect()->route("post.getPost", [
+        return redirect()->route("posts.show", [
             "id" => $post->id
         ]);
     }
 
     public function destroy(int $id) : RedirectResponse {
         Post::findOrFail($id)->delete();
-        return redirect()->route("post.getAllPosts");
+        return redirect()->route("posts.index");
     }
 }

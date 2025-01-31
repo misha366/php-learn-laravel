@@ -23,16 +23,16 @@ Route::get("/get-published-posts", [PostController::class, "getPublishedPosts"])
 // https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers
 
 // CREATE
-Route::get("/posts/create", [PostController::class, "create"])->name("post.createPostView");
-Route::post("/posts", [PostController::class, "store"])->name("post.createPostAction");
+Route::get("/posts/create", [PostController::class, "create"])->name("posts.create");
+Route::post("/posts", [PostController::class, "store"])->name("posts.store");
 
 // READ
-Route::get("/posts", [PostController::class, "index"])->name("post.getAllPosts");
-Route::get("/posts/{id}", [PostController::class, "show"])->name("post.getPost");
+Route::get("/posts", [PostController::class, "index"])->name("posts.index");
+Route::get("/posts/{id}", [PostController::class, "show"])->name("posts.show");
 
 // UPDATE
-Route::get("/posts/{id}/edit", [PostController::class, "edit"])->name("post.updatePostView");
-Route::patch("/posts/{id}", [PostController::class, "update"])->name("post.updatePostAction");
+Route::get("/posts/{id}/edit", [PostController::class, "edit"])->name("posts.edit");
+Route::patch("/posts/{id}", [PostController::class, "update"])->name("posts.update");
 
 // DELETE
-Route::delete("/posts/{id}", [PostController::class, "destroy"])->name("post.deletePostAction");
+Route::delete("/posts/{id}", [PostController::class, "destroy"])->name("posts.destroy");

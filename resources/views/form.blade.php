@@ -7,7 +7,7 @@
     }
 </style>
 
-    <form action="{{ route("post.createPostAction") }}" method="POST" class="container mt-4">
+    <form action="{{ route("posts.store") }}" method="POST" class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-body">
                 @if($mode === "CREATE")
@@ -51,7 +51,7 @@
                     <button type="submit" id="submitBtn" class="btn btn-success w-100">Update</button>
 
                     <script>
-                        function submitClickHandler(event) {
+                        function submitClickHandlerf(event) {
                             event.preventDefault();
                             const data = {
                                 title: document.getElementById("title").value,
@@ -59,15 +59,39 @@
                                 image: document.getElementById("image").value
                             }
                             const jsonData = JSON.stringify(data);
-                            fetch("{{ route('post.updatePostAction', ['id' => $post->id]) }}", {
+
+                            console.log("Отправляемые данные:", data);
+                            fetch("{{ route('posts.update', ['id' => $post->id]) }}", {
                                 method: "PATCH",
                                 body: jsonData,
-                                headers: { "Content-Type": "application/json" }
+                                headers: { "Content-Type": "application/json" },
+                                // redirect: "manual"
                             }).then(response => {
-                                if (response.redirected) {
-                                    window.location.href = response.url;
-                                }
+                                console.log(response);
+                                // if (response.redirected) {
+                                //     window.location.href = response.url;
+                                // }
                             }).catch(error => alert("Error:" + error));
+                        }
+                        function submitClickHandler(e) {
+                            e.preventDefault();
+                            const data = {
+                                title: document.getElementById("title").value,
+                                content: document.getElementById("content").value,
+                                image: document.getElementById("image").value
+                            }
+                            console.log("{{ route("posts.update", ["id" => $post->id]) }}");
+                            fetch("{{ route("posts.update", ["id" => $post->id]) }}", {
+                                method: "PATCH",
+                                body: data,
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded"
+                                }
+                            })
+                                .then(response => {
+                                    console.log(response);
+                                })
+                                .catch(e => console.log(e));
                         }
 
                         document.getElementById("submitBtn").addEventListener("click", submitClickHandler);

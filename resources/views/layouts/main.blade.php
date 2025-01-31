@@ -20,7 +20,7 @@
 
             <ul>
                 <li><a href="{{ route("main.home") }}">Home</a></li>
-                <li><a href="{{ route("post.getAllPosts") }}">All Posts</a></li>
+                <li><a href="{{ route("posts.index") }}">All Posts</a></li>
                 <li><a href="{{ route("post.getFirstPost") }}">First Post</a></li>
                 <li><a href="{{ route("post.getPublishedPosts") }}">Published Posts</a></li>
             </ul>
@@ -29,7 +29,7 @@
 
     <div class="float">
         <div class="float__circle">
-            <a href="{{ route("post.createPostView") }}" class="float__link">
+            <a href="{{ route("posts.create") }}" class="float__link">
                 <span class="float__link-wrapper">
                     ADD
                 </span>

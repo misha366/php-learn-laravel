@@ -21,7 +21,7 @@
 
             // в любом случае я так не буду делать на рил проектах, на рил проектах урл будет в жс
             // прописана как литерал, потому что js файлы будут лежат как статик файлы
-            const url = `{{ route('post.deletePostAction', ['id' => '__ID__']) }}`.replace("__ID__", id);
+            const url = `{{ route('posts.destroy', ['id' => '__ID__']) }}`.replace("__ID__", id);
             fetch(url, {
                 method: "DELETE"
             })
@@ -37,10 +37,10 @@
     </script>
     @foreach($posts as $post)
         <h3 class="post__title">
-            <a href="{{ route("post.getPost", ["id" => $post->id]) }}">
+            <a href="{{ route("posts.show", ["id" => $post->id]) }}">
                 #{{ $post->id }} {{ $post->title }}
             </a>
-            <a href="{{ route("post.updatePostView", ["id" => $post->id]) }}" class="post__link-edit">
+            <a href="{{ route("posts.edit", ["id" => $post->id]) }}" class="post__link-edit">
                 <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="edit">
             </a>
             <a href="#" class="post__link-trash" id="delete-post-{{ $post->id }}">
