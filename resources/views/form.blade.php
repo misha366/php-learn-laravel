@@ -61,7 +61,7 @@
                             const jsonData = JSON.stringify(data);
 
                             console.log("Отправляемые данные:", data);
-                            fetch("{{ route('posts.update', ['id' => $post->id]) }}", {
+                            fetch("{{ route('posts.update', ['post' => $post->id]) }}", {
                                 method: "PATCH",
                                 body: jsonData,
                                 headers: { "Content-Type": "application/json" },
@@ -80,8 +80,8 @@
                                 content: document.getElementById("content").value,
                                 image: document.getElementById("image").value
                             }
-                            console.log("{{ route("posts.update", ["id" => $post->id]) }}");
-                            fetch("{{ route("posts.update", ["id" => $post->id]) }}", {
+                            console.log("{{ route("posts.update", ["post" => $post->id]) }}");
+                            fetch("{{ route("posts.update", ["post" => $post->id]) }}", {
                                 method: "PATCH",
                                 body: data,
                                 headers: {

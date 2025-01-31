@@ -25,8 +25,10 @@ class PostController extends Controller
         ]);
     }
 
-    public function show(int $id) : View {
-        $post = Post::findOrFail($id);
+    // Вместо такого подхода можно писать более короткий вариант
+//    public function show(int $id) : View {
+//        $post = Post::findOrFail($id);
+    public function show(Post $post) : View {
         return view("renderposts", [
             "posts" => [$post],
             "title" => $post->title,
