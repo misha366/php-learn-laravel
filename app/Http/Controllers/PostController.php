@@ -58,14 +58,14 @@ class PostController extends Controller
     const FORM_MODE_UPDATE = "UPDATE";
     const FORM_MODE_CREATE = "CREATE";
 
-    public function getCreatePostForm() : View {
+    public function create() : View {
         return view(self::VIEW_NAME_FORM, [
             self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
             self::VIEW_DATA_KEY_MODE => self::FORM_MODE_CREATE
         ]);
     }
 
-    public function getUpdatePostForm(int $id) : View {
+    public function edit(int $id) : View {
         $post = Post::findOrFail($id);
         return view(self::VIEW_NAME_FORM, [
             self::VIEW_DATA_KEY_TITLE => self::VIEW_TITLE_CREATE_POST,
@@ -74,7 +74,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function getPost(int $id) : View {
+    public function show(int $id) : View {
         $post = Post::findOrFail($id);
         return view(self::VIEW_NAME_RENDER_POSTS, [
             self::VIEW_DATA_KEY_POSTS => [$post],
@@ -90,7 +90,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function getAllPosts() : View
+    public function index() : View
     {
         return view(self::VIEW_NAME_RENDER_POSTS, [
             self::VIEW_DATA_KEY_POSTS => Post::all(),
@@ -110,7 +110,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function createPost(Request $request) : RedirectResponse
+    public function store(Request $request) : RedirectResponse
     {
         $validated = $request->validate([
             self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_CREATE_TITLE,
@@ -125,7 +125,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function updatePost(Request $request, int $id) : RedirectResponse {
+    public function update(Request $request, int $id) : RedirectResponse {
         $validated = $request->validate([
             self::VALIDATION_KEY_TITLE => self::VALIDATE_CONDITION_UPDATE_TITLE,
             self::VALIDATION_KEY_CONTENT => self::VALIDATE_CONDITION_UPDATE_CONTENT,
@@ -156,7 +156,7 @@ class PostController extends Controller
 
     // Можно использовать встроенный софт delete от ларавел, гайд:
     // https://youtu.be/H6YyZb3ssS8?si=A6yxXvth4-0fZ_hY&t=182
-    public function deletePost(int $id) : RedirectResponse {
+    public function destroy(int $id) : RedirectResponse {
         Post::findOrFail($id)->delete();
         return redirect()->route(self::ROUTE_GET_ALL_POSTS);
     }
