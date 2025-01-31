@@ -17,15 +17,22 @@ use App\Http\Controllers\PostController;
 
 Route::get("/", [MainController::class, "index"])->name("main.home");
 Route::get("/get-first-post", [PostController::class, "getFirstPost"])->name("post.getFirstPost");
-Route::get("/get-all-posts", [PostController::class, "getAllPosts"])->name("post.getAllPosts");
 Route::get("/get-published-posts", [PostController::class, "getPublishedPosts"])->name("post.getPublishedPosts");
 
-Route::get("/get-post/{id}", [PostController::class, "getPost"])->name("post.getPost");
+// Гайд на роуты:
+// https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers
 
-Route::get("/create-post", [PostController::class, "getCreatePostForm"])->name("post.createPostView");
-Route::post("/create-post", [PostController::class, "createPost"])->name("post.createPostAction");
+// CREATE
+Route::get("/posts/create", [PostController::class, "getCreatePostForm"])->name("post.createPostView");
+Route::post("/posts", [PostController::class, "createPost"])->name("post.createPostAction");
 
-Route::get("/update-post/{id}", [PostController::class, "getUpdatePostForm"])->name("post.updatePostView");
-Route::patch("/update-post/{id}", [PostController::class, "updatePost"])->name("post.updatePostAction");
+// READ
+Route::get("/posts", [PostController::class, "getAllPosts"])->name("post.getAllPosts");
+Route::get("/posts/{id}", [PostController::class, "getPost"])->name("post.getPost");
 
-Route::delete("/delete-post/{id}", [PostController::class, "deletePost"])->name("post.deletePostAction");
+// UPDATE
+Route::get("/posts/{id}/edit", [PostController::class, "getUpdatePostForm"])->name("post.updatePostView");
+Route::patch("/posts/{id}", [PostController::class, "updatePost"])->name("post.updatePostAction");
+
+// DELETE
+Route::delete("/posts/{id}", [PostController::class, "deletePost"])->name("post.deletePostAction");
