@@ -51,7 +51,7 @@ Migrations:
 
 <b>PostTag</b> (Post to Tag (many-to-many) relation)
 ```plaintext
-Category {
+PostTag {
     (1)
     id         bigint(20) unsigned  (Primary Key, Auto Increment)
     post_id    bigint(20) unsigned  (Внешний ключ на пост)
