@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="{{ asset("style/style.css") }}">
 </head>
-<body class="container">
+<body class="container bg-body-secondary">
 
     <div class="row">
         <nav>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="float">
-        <div class="float__circle">
+        <div class="float__circle btn btn-success">
             <a href="{{ route("posts.create") }}" class="float__link">
                 <span class="float__link-wrapper">
                     ADD

@@ -16,8 +16,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function edit(int $id) : View {
-        $post = Post::findOrFail($id);
+    public function edit(Post $post) : View {
         return view("form", [
             "title" => "Create post",
             "mode" => "UPDATE",
@@ -26,6 +25,11 @@ class PostController extends Controller
     }
 
     // Вместо такого подхода можно писать более короткий вариант
+    // В таком случае мы должны будем вместо int id принимать в роуте post
+    // и сам ларавел в аргумент будет подтягивать нам post
+
+    // Сама переменная $post принимает любое значение, но подтягивать запись
+    // она будет только если мы передали валидный id (findOrFail)
 //    public function show(int $id) : View {
 //        $post = Post::findOrFail($id);
     public function show(Post $post) : View {
@@ -71,11 +75,11 @@ class PostController extends Controller
         $post = Post::create($validated);
 
         return redirect()->route("posts.show", [
-            "id" => $post->id
+            "post" => $post
         ]);
     }
 
-    public function update(Request $request, int $id) : RedirectResponse {
+    public function update(Request $request, Post $post) : RedirectResponse {
         $validated = $request->validate([
             "title" => "string|max:255",
             "content" => "string",
@@ -86,16 +90,15 @@ class PostController extends Controller
             $validated["image"] = ($validated["image"] === "DEL_IMG") ? null : $validated["image"];
         }
 
-        $post = Post::findOrFail($id);
         $post->update($validated);
 
         return redirect()->route("posts.show", [
-            "id" => $post->id
+            "post" => $post->id
         ]);
     }
 
-    public function destroy(int $id) : RedirectResponse {
-        Post::findOrFail($id)->delete();
+    public function destroy(Post $post) : RedirectResponse {
+        $post->delete();
         return redirect()->route("posts.index");
     }
 }

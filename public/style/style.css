@@ -1,5 +1,4 @@
 body {
-    background: #a0aec0;
     font-family: "Montserrat", serif;
     font-optical-sizing: auto;
     font-weight: 500;
@@ -35,13 +34,13 @@ nav ul li a:hover {
 }
 
 .float {
+    z-index: 2;
     position: fixed;
     bottom: 50px;
     right: 50px;
 }
 
 .float__circle {
-    background: #ef4444;
     height: 100px;
     width: 100px;
     border-radius: 50%;
@@ -84,6 +83,15 @@ nav ul li a:hover {
 }
 
 .post__link-trash {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.post__link-form {
     margin-left: auto;
 }
 

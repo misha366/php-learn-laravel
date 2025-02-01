@@ -9,32 +9,6 @@
     <h1 style="text-align: center">#{{ $post->id }} {{ $post->title }}</h1>
     <div>{{ $post->content }}</div>
 @else
-    <script>
-        function deleteClickHandler(e, id) {
-            e.preventDefault();
-
-            const isDelete = confirm("Delete #" + id + "?");
-            if (!isDelete) return;
-            // После того как отработает пхп на месте функции route будет строка с ссылкой на удаление
-            // Только вместо id будет флаг __ID__, который мы заменим на реальный айдишник, только уже
-            // через js
-
-            // в любом случае я так не буду делать на рил проектах, на рил проектах урл будет в жс
-            // прописана как литерал, потому что js файлы будут лежат как статик файлы
-            const url = `{{ route('posts.destroy', ['post' => '__ID__']) }}`.replace("__ID__", id);
-            fetch(url, {
-                method: "DELETE"
-            })
-                .then(response => {
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                    }
-                })
-                .then(data => console.log("Success:", data))
-                .catch(error => alert("Error:" + error));
-
-        }
-    </script>
     @foreach($posts as $post)
         <h3 class="post__title">
             <a href="{{ route("posts.show", ["post" => $post->id]) }}">
@@ -43,13 +17,15 @@
             <a href="{{ route("posts.edit", ["post" => $post->id]) }}" class="post__link-edit">
                 <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="edit">
             </a>
-            <a href="#" class="post__link-trash" id="delete-post-{{ $post->id }}">
-                <img src="https://cdn-icons-png.flaticon.com/512/5258/5258411.png" alt="edit">
-            </a>
-            <script>
-                document.getElementById("delete-post-{{ $post->id }}")
-                    .addEventListener("click", (e) => deleteClickHandler(e, {{ $post->id }}))
-            </script>
+            <form class="post__link-form" action="{{ route("posts.destroy", ["post" => $post->id]) }}" method="POST">
+                @method("delete")
+                <button type="submit" class="post__link-trash btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                </button>
+            </form>
         </h3>
         <div>{{ $post->content }}</div>
         <hr>
