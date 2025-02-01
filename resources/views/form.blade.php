@@ -9,10 +9,20 @@
 
 
         @if($mode === "UPDATE")
-            <form action="{{ route("posts.update", ["post" => $post->id]) }}" method="POST" class="container mt-4">
+            <form
+                action="{{ route("posts.update", ["post" => $post->id]) }}"
+                method="POST"
+                class="container mt-4"
+                novalidate
+            >
             @method("PATCH")
         @elseif($mode === "CREATE")
-            <form action="{{ route("posts.store") }}" method="POST" class="container mt-4">
+            <form
+                action="{{ route("posts.store") }}"
+                method="POST"
+                class="container mt-4"
+                novalidate
+            >
         @endif
 
         <div class="card shadow-sm">
