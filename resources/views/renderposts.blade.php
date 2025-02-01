@@ -32,12 +32,19 @@
                     </button>
                 </form>
             </h3>
-            <div>
+            <div class="mb-2">
                 <i class="badge text-bg-primary text-wrap">
                     {{ $post->category === NULL ? "No category" : $post->category->title }}
                 </i>
+
+                <i class="badge text-bg-warning text-wrap">
+{{--                    {{ dd($post->tags->toArray()[0]) }}--}}
+                    {{ count($post->tags) === 0 ?
+                            "No tags" :
+                            implode(", ", array_map(fn($o) => $o["title"], $post->tags->toArray())) }}
+                </i>
             </div>
-            <div>{{ $post->content }}</div>
+            <div  class="mb-4">{{ $post->content }}</div>
             <hr>
         @endforeach
     @endif
