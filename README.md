@@ -37,5 +37,28 @@ Migrations:
 1. [2025_02_01_074217_create_categories_table.php](https://github.com/misha366/php-learn-laravel/blob/master/database/migrations/2025_02_01_074217_create_categories_table.php)
 
 <b>Tag</b>
+```plaintext
+Tag {
+    (1)
+    id         bigint(20) unsigned  (Primary Key, Auto Increment)
+    title      string(255)          (Название тега, обязательное)
+    created_at timestamp NULL       (Дата создания)
+    updated_at timestamp NULL       (Дата обновления)
+}
+```
+Migrations:
+1. [2025_02_01_203901_create_tags_table.php](https://github.com/misha366/php-learn-laravel/blob/master/database/migrations/2025_02_01_203901_create_tags_table.php)
 
-<b>PostTag</b>
+<b>PostTag</b> (Post to Tag (many-to-many) relation)
+```plaintext
+Category {
+    (1)
+    id         bigint(20) unsigned  (Primary Key, Auto Increment)
+    post_id    bigint(20) unsigned  (Внешний ключ на пост)
+    tag_id     bigint(20) unsigned  (Внешний ключ на тег)
+    created_at timestamp NULL       (Дата создания)
+    updated_at timestamp NULL       (Дата обновления)
+}
+```
+Migrations:
+1. [2025_02_01_204539_create_post_tags_table.php](https://github.com/misha366/php-learn-laravel/blob/master/database/migrations/2025_02_01_204539_create_post_tags_table.php)
