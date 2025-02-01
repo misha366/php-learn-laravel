@@ -41,7 +41,7 @@
 {{--                    {{ dd($post->tags->toArray()[0]) }}--}}
                     {{ count($post->tags) === 0 ?
                             "No tags" :
-                            implode(", ", array_map(fn($o) => $o["title"], $post->tags->toArray())) }}
+                            implode(", ", $post->tags->pluck("title")->toArray()) }}
                 </i>
             </div>
             <div  class="mb-4">{{ $post->content }}</div>

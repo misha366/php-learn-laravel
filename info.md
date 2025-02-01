@@ -92,3 +92,6 @@ https://www.youtube.com/watch?v=sdpaqoveghk&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VF
 https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers
 
 Структура: https://youtu.be/8VJ7tylaaFY?si=ZAFQAFIbn4X-axgS&t=383
+
+#### Pluck
+`$post->tags->pluck('title')->toArray()` - ф-я pluck автоматически извлекает нужные поля и формирует Collection
