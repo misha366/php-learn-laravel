@@ -35,3 +35,7 @@ Category {
 ```
 Migrations:
 1. [2025_02_01_074217_create_categories_table.php](https://github.com/misha366/php-learn-laravel/blob/master/database/migrations/2025_02_01_074217_create_categories_table.php)
+
+<b>Tag</b>
+
+<b>PostTag</b>
