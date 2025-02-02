@@ -39,6 +39,36 @@
                            value="{{ $post->image }}">
                 </div>
 
+                <div class="mb-3">
+                    <label for="image" class="form-label">Category</label>
+                    <select name="category_id" class="form-select">
+                        <option value="null">No Category</option>
+                        @foreach($categories as $cat)
+                            <option
+                                value="{{ $cat->id }}"
+                                @if(isset($post->category) && $post->category->id === $cat->id)
+                                    selected
+                                @endif
+                            >{{ $cat->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Tags</label>
+                    <select multiple name="tag_ids[]" class="form-select">
+                        @foreach($tags as $tag)
+                            <option
+                                value="{{ $tag->id }}"
+                                @if(isset($post->tags)
+                                    && in_array($tag->id, $post->tags->pluck("id")->toArray()))
+                                    selected
+                                @endif
+                            >{{ $tag->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <button type="submit" id="submitBtn" class="btn btn-success w-100">Update</button>
             </div>
         </div>

@@ -22,9 +22,13 @@ class PostController extends Controller
     }
 
     public function edit(Post $post) : View {
+        $categories = Category::all();
+        $tags = Tag::all();
         return view("post/edit", [
             "title" => "Edit post",
-            "post" => $post
+            "post" => $post,
+            "categories" => $categories,
+            "tags" => $tags
         ]);
     }
 
@@ -46,7 +50,8 @@ class PostController extends Controller
     public function index() : View
     {
         return view("post/index", [
-            "posts" => Post::orderBy("id", "DESC")->get(),
+//            "posts" => Post::orderBy("id", "DESC")->get(),
+            "posts" => Post::all(),
             "title" => "All posts",
         ]);
     }
@@ -81,17 +86,28 @@ class PostController extends Controller
     }
 
     public function update(Request $request, Post $post) : RedirectResponse {
+
+        if ($request->request->all()["category_id"] === "null") {
+            $request->request->add(["category_id" => NULL]);
+        }
+
+        if ($request->request->all()["image"] === "") {
+            $request->request->add(["image" => NULL]);
+        }
+
         $validated = $request->validate([
             "title" => "string|max:255",
             "content" => "string",
             "image" => "nullable|string",
+            "category_id" => "nullable|integer|exists:categories,id",
+            "tag_ids" => "nullable|array",
+            "tag_ids.*" => "integer|exists:tags,id",
         ]);
 
-        if (isset($validated["image"])) {
-            $validated["image"] = ($validated["image"] === "DEL_IMG") ? null : $validated["image"];
-        }
-
         $post->update($validated);
+        if (!empty($validated["tag_ids"])) {
+            $post->tags()->sync($validated["tag_ids"]);
+        }
 
         return redirect()->route("posts.show", [
             "post" => $post->id
