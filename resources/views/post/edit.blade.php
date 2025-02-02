@@ -46,7 +46,7 @@
                         @foreach($categories as $cat)
                             <option
                                 value="{{ $cat->id }}"
-                                @if(isset($post->category) && $post->category->id === $cat->id)
+                                @if($post->category_id === $cat->id)
                                     selected
                                 @endif
                             >{{ $cat->title }}</option>
