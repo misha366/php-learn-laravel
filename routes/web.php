@@ -16,8 +16,6 @@ use App\Http\Controllers\PostController;
 */
 
 Route::get("/", [MainController::class, "index"])->name("main.home");
-Route::get("/get-first-post", [PostController::class, "getFirstPost"])->name("post.getFirstPost");
-Route::get("/get-published-posts", [PostController::class, "getPublishedPosts"])->name("post.getPublishedPosts");
 
 // Гайд на роуты:
 // https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers

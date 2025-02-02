@@ -10,16 +10,14 @@ use Illuminate\View\View;
 class PostController extends Controller
 {
     public function create() : View {
-        return view("form", [
+        return view("post/create", [
             "title" => "Create post",
-            "mode" => "CREATE"
         ]);
     }
 
     public function edit(Post $post) : View {
-        return view("form", [
-            "title" => "Create post",
-            "mode" => "UPDATE",
+        return view("post/edit", [
+            "title" => "Edit post",
             "post" => $post
         ]);
     }
@@ -33,34 +31,17 @@ class PostController extends Controller
 //    public function show(int $id) : View {
 //        $post = Post::findOrFail($id);
     public function show(Post $post) : View {
-        return view("renderposts", [
-            "posts" => [$post],
-            "title" => $post->title,
-        ]);
-    }
-
-    public function getFirstPost() : View {
-        $post = Post::findOrFail(1);
-        return view("renderposts", [
-            "posts" => [$post],
+        return view("post/show", [
+            "post" => $post,
             "title" => $post->title,
         ]);
     }
 
     public function index() : View
     {
-        return view("renderposts", [
+        return view("post/index", [
             "posts" => Post::all(),
             "title" => "All posts",
-        ]);
-    }
-
-    public function getPublishedPosts() : View {
-        $posts = Post::where("is_published", 1)->get();
-
-        return view("renderposts", [
-            "posts" => $posts,
-            "title" => "Published posts",
         ]);
     }
 

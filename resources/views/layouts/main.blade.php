@@ -21,8 +21,6 @@
             <ul>
                 <li><a href="{{ route("main.home") }}">Home</a></li>
                 <li><a href="{{ route("posts.index") }}">All Posts</a></li>
-                <li><a href="{{ route("post.getFirstPost") }}">First Post</a></li>
-                <li><a href="{{ route("post.getPublishedPosts") }}">Published Posts</a></li>
             </ul>
         </nav>
     </div>
