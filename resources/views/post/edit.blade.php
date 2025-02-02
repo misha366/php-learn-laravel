@@ -24,19 +24,19 @@
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" id="title" name="title" class="form-control"
-                           value="{{ $post->title }}" required>
+                           value="{{ old("title", $post->title) }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="content" class="form-label">Content</label>
                     <textarea id="content" name="content" class="form-control" rows="3"
-                              required>{{ $post->content }}</textarea>
+                              required>{{ old("content", $post->content) }}</textarea>
                 </div>
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Image URL</label>
                     <input type="text" id="image" name="image" class="form-control"
-                           value="{{ $post->image }}">
+                           value="{{ old("image", $post->image) }}">
                 </div>
 
                 <div class="mb-3">
@@ -46,9 +46,13 @@
                         @foreach($categories as $cat)
                             <option
                                 value="{{ $cat->id }}"
-                                @if($post->category_id === $cat->id)
-                                    selected
-                                @endif
+                                {{--
+
+                                Если у нас до этого был ввод, значит мы больше не учитываем те значения
+                                которые подтянулись из БД, а ставим те что юзер вводил до этого
+
+                                --}}
+                                @selected($cat->id === (int) old("category_id", $post->category_id))
                             >{{ $cat->title }}</option>
                         @endforeach
                     </select>
@@ -60,10 +64,27 @@
                         @foreach($tags as $tag)
                             <option
                                 value="{{ $tag->id }}"
-                                @if(isset($post->tags)
-                                    && in_array($tag->id, $post->tags->pluck("id")->toArray()))
-                                    selected
+
+                                {{--
+
+                                 Отмечать данный тег как выбранные если:
+                                 1. Если есть старый набор тегов, то выбирать из него
+                                 2. Если нет, то из заранее выбранных тегов
+
+                                 --}}
+
+                                @if (old("tag_ids") === NULL)
+                                    @selected(isset($post->tags)
+                                        && in_array($tag->id, $post->tags->pluck("id")->toArray()))
+                                @else
+                                    @selected(in_array(
+                                    $tag->id,
+                                    array_map("intval", old("tag_ids"))
+                                ))
                                 @endif
+
+
+
                             >{{ $tag->title }}</option>
                         @endforeach
                     </select>

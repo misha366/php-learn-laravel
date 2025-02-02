@@ -1,7 +1,7 @@
 @extends("layouts.main")
 @section("content")
     <style>
-    .float {
+        .float {
             display: none;
         }
     </style>
@@ -21,20 +21,33 @@
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input type="text" id="title" name="title" class="form-control"
-                           placeholder="Enter title" required>
+                    <input
+                        value="{{ old("title") }}"
+                        type="text"
+                        id="title"
+                        name="title"
+                        class="form-control"
+                        placeholder="Enter title"
+                        required
+                    >
                 </div>
 
                 <div class="mb-3">
                     <label for="content" class="form-label">Content</label>
                     <textarea id="content" name="content" class="form-control" rows="3"
-                              placeholder="Enter content" required></textarea>
+                              placeholder="Enter content" required>{{ old("content") }}</textarea>
                 </div>
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Image URL</label>
-                    <input type="text" id="image" name="image" class="form-control"
-                           placeholder="Enter image URL">
+                    <input
+                        value="{{ old("image") }}"
+                        type="text"
+                        id="image"
+                        name="image"
+                        class="form-control"
+                        placeholder="Enter image URL"
+                    >
                 </div>
 
                 <div class="mb-3">
@@ -42,7 +55,14 @@
                     <select name="category_id" class="form-select">
                         <option value="null">No Category</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->title }}</option>
+                            <option
+                                {{-- Эта проверка нужна для того чтобы поля категории не
+                                 сбрасывались из-за ошибки валидации --}}
+                                @if($cat->id === (int) old("category_id"))
+                                    selected
+                                @endif
+                                value="{{ $cat->id }}"
+                            >{{ $cat->title }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -51,7 +71,13 @@
                     <label for="image" class="form-label">Tags</label>
                     <select multiple name="tag_ids[]" class="form-select">
                         @foreach($tags as $tag)
-                            <option value="{{ $tag->id }}">{{ $tag->title }}</option>
+                            <option
+                                @selected(old("tag_ids") !== null && in_array(
+                                    $tag->id,
+                                    array_map('intval', old("tag_ids"))
+                                ))
+                                value="{{ $tag->id }}"
+                            >{{ $tag->title }}</option>
                         @endforeach
                     </select>
                 </div>
