@@ -95,3 +95,7 @@ https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controller
 
 #### Pluck
 `$post->tags->pluck('title')->toArray()` - ф-я pluck автоматически извлекает нужные поля и формирует Collection
+
+#### Однометодные контроллера
+Однометодные контроллеры пишутся через маг. метод __invoke()
+

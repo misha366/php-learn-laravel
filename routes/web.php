@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\About\IndexController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -16,7 +17,9 @@ use App\Http\Controllers\PostController;
 */
 
 Route::get("/", [MainController::class, "index"])->name("main.home");
-
+Route::group(["namespace" => ""], function () {
+    Route::get("/about", IndexController::class)->name("about.index");
+});
 // Гайд на роуты:
 // https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers
 
