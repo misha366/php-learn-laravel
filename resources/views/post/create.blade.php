@@ -37,6 +37,16 @@
                            placeholder="Enter image URL">
                 </div>
 
+                <div class="mb-3">
+                    <label for="image" class="form-label">Category</label>
+                    <select name="category_id" class="form-select">
+                        <option value="null">No Category</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-primary w-100">Create</button>
             </div>
         </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -10,8 +12,12 @@ use Illuminate\View\View;
 class PostController extends Controller
 {
     public function create() : View {
+        $categories = Category::all();
+        $tags = Tag::all();
         return view("post/create", [
             "title" => "Create post",
+            "categories" => $categories,
+            "tags" => $tags
         ]);
     }
 
@@ -47,10 +53,16 @@ class PostController extends Controller
 
     public function store(Request $request) : RedirectResponse
     {
+
+        if ($request->request->all()["category_id"] === "null") {
+            $request->request->add(["category_id" => NULL]);
+        }
+
         $validated = $request->validate([
             "title" => "required|string|max:255",
             "content" => "required|string",
             "image" => "nullable|string",
+            "category_id" => "nullable|integer|exists:categories,id",
         ]);
 
         $post = Post::create($validated);
