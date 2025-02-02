@@ -47,6 +47,15 @@
                     </select>
                 </div>
 
+                <div class="mb-3">
+                    <label for="image" class="form-label">Tags</label>
+                    <select multiple name="tag_ids[]" class="form-select">
+                        @foreach($tags as $tag)
+                            <option value="{{ $tag->id }}">{{ $tag->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-primary w-100">Create</button>
             </div>
         </div>

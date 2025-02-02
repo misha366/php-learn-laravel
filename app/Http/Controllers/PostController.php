@@ -46,7 +46,7 @@ class PostController extends Controller
     public function index() : View
     {
         return view("post/index", [
-            "posts" => Post::all(),
+            "posts" => Post::orderBy("id", "DESC")->get(),
             "title" => "All posts",
         ]);
     }
@@ -63,9 +63,17 @@ class PostController extends Controller
             "content" => "required|string",
             "image" => "nullable|string",
             "category_id" => "nullable|integer|exists:categories,id",
+            "tag_ids" => "nullable|array",
+            "tag_ids.*" => "integer|exists:tags,id",
         ]);
 
         $post = Post::create($validated);
+
+        // https://stackoverflow.com/questions/23968415/laravel-eloquent-attach-vs-sync
+        // Обновляет записи в post_tags
+        if (!empty($validated["tag_ids"])) {
+            $post->tags()->sync($validated["tag_ids"]);
+        }
 
         return redirect()->route("posts.show", [
             "post" => $post
