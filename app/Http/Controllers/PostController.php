@@ -78,9 +78,9 @@ class PostController extends Controller
         $validated = $request->validated();
 
         $post->update($validated);
-        if (!empty($validated["tag_ids"])) {
-            $post->tags()->sync($validated["tag_ids"]);
-        }
+        // Помню, что валидатор конвертит пустые значения в null, поэтому добавляю
+        //  ?? [], чтобы не было ошибок и данные корректно записались
+        $post->tags()->sync($validated["tag_ids"] ?? []);
 
         return redirect()->route("posts.show", [
             "post" => $post->id
