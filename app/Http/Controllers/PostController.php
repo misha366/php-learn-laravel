@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -60,11 +59,6 @@ class PostController extends Controller
 
     public function store(StoreRequest $request) : RedirectResponse
     {
-
-        if ($request->request->all()["category_id"] === "null") {
-            $request->request->add(["category_id" => NULL]);
-        }
-
         $validated = $request->validated();
 
         $post = Post::create($validated);
@@ -81,14 +75,6 @@ class PostController extends Controller
     }
 
     public function update(UpdateRequest $request, Post $post) : RedirectResponse {
-
-        if ($request->request->all()["category_id"] === "null") {
-            $request->request->add(["category_id" => NULL]);
-        }
-
-        if ($request->request->all()["image"] === "") {
-            $request->request->add(["image" => NULL]);
-        }
         $validated = $request->validated();
 
         $post->update($validated);

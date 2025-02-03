@@ -99,7 +99,7 @@ https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controller
 #### Однометодные контроллера
 Однометодные контроллеры пишутся через маг. метод __invoke()
 
-#### Request
+#### FormRequest
 https://www.youtube.com/watch?v=Es0K66she5Q&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=27
 
 Реквесты некое подобие дто для приёма данных, инструмент для того чтобы
@@ -109,3 +109,16 @@ https://www.youtube.com/watch?v=Es0K66she5Q&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VF
 
 Авторайз надо переключать на тру
 
+<b>Если мы используем валидацию через класс, то она происходит, ДО запуска акшна</b>
+Решением будет использовать метод `prepareForValidatio()` в котором можно преобразовать 
+пустое значение непосредственно в null
+
+```
+public function prepareForValidation() : void {
+    $this->merge([
+        "category_id" => $this->category_id === "null" ? null : $this->category_id,
+        "image" => $this->image === "" ? null : $this->image
+    ]);
+}
+```
+Но в валидатор сам конвертирует пустую строку в null, поэтому в этой ситуации данный код юзлесс

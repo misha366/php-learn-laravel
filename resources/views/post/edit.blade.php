@@ -42,7 +42,7 @@
                 <div class="mb-3">
                     <label for="image" class="form-label">Category</label>
                     <select name="category_id" class="form-select">
-                        <option value="null">No Category</option>
+                        <option value="">No Category</option>
                         @foreach($categories as $cat)
                             <option
                                 value="{{ $cat->id }}"
