@@ -122,3 +122,8 @@ public function prepareForValidation() : void {
 }
 ```
 Но в валидатор сам конвертирует пустую строку в null, поэтому в этой ситуации данный код юзлесс
+
+#### Services
+https://www.youtube.com/watch?v=GssEIvK3Is0&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=28
+
+Слой с сервисами надо внедрять в сложных проектах, только когда действительно становится сложно читать код
