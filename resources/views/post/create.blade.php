@@ -70,12 +70,12 @@
                 <div class="mb-3">
                     <label for="image" class="form-label">Tags</label>
                     <select multiple name="tag_ids[]" class="form-select">
+                        @php
+                            $tagsOld = array_map('intval', old("tag_ids", []));
+                        @endphp
                         @foreach($tags as $tag)
                             <option
-                                @selected(old("tag_ids") !== null && in_array(
-                                    $tag->id,
-                                    array_map('intval', old("tag_ids"))
-                                ))
+                                @selected(in_array($tag->id, $tagsOld))
                                 value="{{ $tag->id }}"
                             >{{ $tag->title }}</option>
                         @endforeach

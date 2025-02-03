@@ -12,7 +12,8 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
-    public function create() : View {
+    public function create(): View
+    {
         $categories = Category::all();
         $tags = Tag::all();
         return view("post/create", [
@@ -22,7 +23,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function edit(Post $post) : View {
+    public function edit(Post $post): View
+    {
         $categories = Category::all();
         $tags = Tag::all();
         return view("post/edit", [
@@ -41,24 +43,24 @@ class PostController extends Controller
     // она будет только если мы передали валидный id (findOrFail)
 //    public function show(int $id) : View {
 //        $post = Post::findOrFail($id);
-    public function show(Post $post) : View {
+    public function show(Post $post): View
+    {
         return view("post/show", [
             "post" => $post,
             "title" => $post->title,
         ]);
     }
 
-    public function index() : View
+    public function index(): View
     {
         $posts = Post::paginate(10);
         return view("post/index", [
-//            "posts" => Post::orderBy("id", "DESC")->get(),
             "posts" => $posts,
             "title" => "All posts",
         ]);
     }
 
-    public function store(StoreRequest $request) : RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -75,7 +77,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(UpdateRequest $request, Post $post) : RedirectResponse {
+    public function update(UpdateRequest $request, Post $post): RedirectResponse
+    {
         $validated = $request->validated();
 
         $post->update($validated);
@@ -88,7 +91,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function destroy(Post $post) : RedirectResponse {
+    public function destroy(Post $post): RedirectResponse
+    {
         $post->delete();
         return redirect()->route("posts.index");
     }

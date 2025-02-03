@@ -24,11 +24,10 @@
         </h3>
         <div class="mb-2">
             <i class="badge text-bg-primary text-wrap">
-                {{ $post->category === NULL ? "No category" : $post->category->title }}
+                {{  $post->category?->title ?? "No category" }}
             </i>
 
             <i class="badge text-bg-warning text-wrap">
-                {{--                    {{ dd($post->tags->toArray()[0]) }}--}}
                 {{ count($post->tags) === 0 ?
                         "No tags" :
                         implode(", ", $post->tags->pluck("title")->toArray()) }}

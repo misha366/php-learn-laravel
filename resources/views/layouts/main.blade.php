@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="{{ asset("style/style.css") }}">
 </head>
-<body class="container bg-body-secondary">
+<body class="container bg-body-secondary pb-3">
 
     <div class="row">
         <nav>
