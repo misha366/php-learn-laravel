@@ -61,6 +61,14 @@
                 <div class="mb-3">
                     <label for="image" class="form-label">Tags</label>
                     <select multiple name="tag_ids[]" class="form-select">
+                        @php
+                            /** @var \Illuminate\Support\ViewErrorBag $errors */
+                            $isFirstAttempt = count($errors->all()) === 0;
+
+                            // про нуллсейф ?-> оператор написал в пхптипс
+                            $tagsFromDB = $post->tags?->pluck("id")->toArray() ?? [];
+                            $tagsOld = array_map("intval", old("tag_ids", []));
+                        @endphp
                         @foreach($tags as $tag)
                             <option
                                 value="{{ $tag->id }}"
@@ -73,18 +81,28 @@
 
                                  --}}
 
-                                @if (old("tag_ids") === NULL)
-                                    @selected(isset($post->tags)
-                                        && in_array($tag->id, $post->tags->pluck("id")->toArray()))
-                                @else
-                                    @selected(in_array(
-                                    $tag->id,
-                                    array_map("intval", old("tag_ids"))
-                                ))
-                                @endif
+                                {{-- Подтягиваем значения из БД, только если это первая попытка пройти
+                                валидацию (при второй попытке, очевидно массив с ошибками будет не пуст)
 
+                                Проблема заключается в том, что есть баг - если например пользователь во
+                                время редактирования (при первой попытке) убрал все теги, то массив
+                                old("tag_ids") будет пустой, так будто бы это первая попытка юзера
+                                пройти валидацию. И в таком кейсе (когда юзер убрал при первой попытке
+                                все теги) на вторую попытку подтянутся теги из базы, что есть неправильно
 
+                                Мой подход заключается в том, чтобы маркировать теги из базы только при
+                                первой попытке (когда ошибок нету), при таком поведении, подгружены данные
+                                из таблицы будут только 1 раз, когда юзер зашёл на форму при первой попытке
+                                и не совершил ошибок валидации.
+                                --}}
+{{--                                Старое условие: --}}
+{{--                                @if (old("tag_ids") === NULL)--}}
 
+                                @selected(
+                                    ($isFirstAttempt && in_array($tag->id, $tagsFromDB))
+                                    ||
+                                    in_array($tag->id, $tagsOld)
+                                )
                             >{{ $tag->title }}</option>
                         @endforeach
                     </select>
