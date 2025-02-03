@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\StoreRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -56,21 +58,14 @@ class PostController extends Controller
         ]);
     }
 
-    public function store(Request $request) : RedirectResponse
+    public function store(StoreRequest $request) : RedirectResponse
     {
 
         if ($request->request->all()["category_id"] === "null") {
             $request->request->add(["category_id" => NULL]);
         }
 
-        $validated = $request->validate([
-            "title" => "required|string|max:255",
-            "content" => "required|string",
-            "image" => "nullable|string",
-            "category_id" => "nullable|integer|exists:categories,id",
-            "tag_ids" => "nullable|array",
-            "tag_ids.*" => "integer|exists:tags,id",
-        ]);
+        $validated = $request->validated();
 
         $post = Post::create($validated);
 
@@ -85,7 +80,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(Request $request, Post $post) : RedirectResponse {
+    public function update(UpdateRequest $request, Post $post) : RedirectResponse {
 
         if ($request->request->all()["category_id"] === "null") {
             $request->request->add(["category_id" => NULL]);
@@ -94,15 +89,7 @@ class PostController extends Controller
         if ($request->request->all()["image"] === "") {
             $request->request->add(["image" => NULL]);
         }
-
-        $validated = $request->validate([
-            "title" => "string|max:255",
-            "content" => "string",
-            "image" => "nullable|string",
-            "category_id" => "nullable|integer|exists:categories,id",
-            "tag_ids" => "nullable|array",
-            "tag_ids.*" => "integer|exists:tags,id",
-        ]);
+        $validated = $request->validated();
 
         $post->update($validated);
         if (!empty($validated["tag_ids"])) {

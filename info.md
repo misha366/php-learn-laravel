@@ -99,3 +99,13 @@ https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controller
 #### Однометодные контроллера
 Однометодные контроллеры пишутся через маг. метод __invoke()
 
+#### Request
+https://www.youtube.com/watch?v=Es0K66she5Q&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=27
+
+Реквесты некое подобие дто для приёма данных, инструмент для того чтобы
+вынести логику принятие данных в отдельный класс
+
+> php artisan make:request Post/StoreRequest
+
+Авторайз надо переключать на тру
+
