@@ -50,9 +50,10 @@ class PostController extends Controller
 
     public function index() : View
     {
+        $posts = Post::paginate(10);
         return view("post/index", [
 //            "posts" => Post::orderBy("id", "DESC")->get(),
-            "posts" => Post::all(),
+            "posts" => $posts,
             "title" => "All posts",
         ]);
     }

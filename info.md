@@ -130,3 +130,11 @@ https://www.youtube.com/watch?v=GssEIvK3Is0&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VF
 
 #### Factory и seed
 Инструменты для создания dump даты в ларавел
+
+#### Pagination style
+> php artisan vendor:publish --tag=laravel-pagination
+https://www.youtube.com/watch?v=m6b8OUjDXgs&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=30
+
+Для того чтобы заюзать пагинацию нужно доставать посты с помощью `::paginate(step)`,
+потом нужно просто указать в шаблоне `{{ $posts->links() }}` и ларавел сам подтянет компонент
+пагинации. При нужде этот шаблон можно написать самому.

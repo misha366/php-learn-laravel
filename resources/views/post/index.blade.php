@@ -37,5 +37,7 @@
         <div class="mb-4">{{ $post->content }}</div>
         <hr>
     @endforeach
-
+    <div class="navigation">
+        {{ $posts->links() }}
+    </div>
 @endsection
