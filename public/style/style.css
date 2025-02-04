@@ -105,3 +105,8 @@ nav ul li a:hover {
     height: 20px;
     margin-right: 10px;
 }
+
+.no-posts-capture {
+    color: var(--bs-warning);
+    text-align: center;
+}

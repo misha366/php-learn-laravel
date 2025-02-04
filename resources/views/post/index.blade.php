@@ -7,6 +7,10 @@
                 Filters
             </button>
         </div>
+        <hr>
+        @if(count($posts) === 0)
+            <h3 class="no-posts-capture">No posts</h3>
+        @endif
         @foreach($posts as $post)
             <h3 class="post__title">
                 <a href="{{ route("posts.show", ["post" => $post->id]) }}">
@@ -44,7 +48,7 @@
             <hr>
         @endforeach
         <div class="navigation">
-            {{ $posts->links() }}
+            {{ $posts->withQueryString()->links() }}
         </div>
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="sidebar">
@@ -56,12 +60,16 @@
                     const url = new URL(window.location.href);
                     const params = new URLSearchParams(url.search);
 
-                    // Удаляем пустые параметры
+                    // Собираем ключи пустых параметров
+                    const keysToRemove = [];
                     for (const [key, value] of params.entries()) {
                         if (value === "") {
-                            params.delete(key);
+                            keysToRemove.push(key);
                         }
                     }
+
+                    // Удаляем пустые параметры
+                    keysToRemove.forEach(key => params.delete(key));
 
                     // Обновляем URL без перезагрузки
                     const newUrl = url.pathname + (params.toString() ? `?${params}` : "");
@@ -99,7 +107,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Применить</button>
+                    <button type="submit" class="btn btn-primary">Apply</button>
                 </form>
             </div>
         </div>
