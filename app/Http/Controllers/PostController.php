@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\FilterRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Category;
@@ -51,11 +52,25 @@ class PostController extends Controller
         ]);
     }
 
-    public function index(): View
+    public function index(FilterRequest $request): View
     {
-        $posts = Post::paginate(10);
+        $validated = $request->validated();
+        $query = Post::query();
+
+        if (isset($validated["is_published"])) {
+            $query->where("is_published", $validated["is_published"]);
+        }
+
+        if (isset($validated["category_id"])) {
+            $query->where("category_id", $validated["category_id"]);
+        }
+
+        $posts = $query->paginate(10);
+        $categories = Category::all();
+
         return view("post/index", [
             "posts" => $posts,
+            "categories" => $categories,
             "title" => "All posts",
         ]);
     }
