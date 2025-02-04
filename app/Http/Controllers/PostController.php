@@ -8,31 +8,44 @@ use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Services\MetaService;
+use App\Services\PostService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class PostController extends Controller
 {
+    // если бы я это делал в однометодных контроллерах, мне бы нужно было
+    // создавать общий BaseController, который будут наследовать все контроллеры
+    // и уже в нём создавать инстанс сервиса
+    public PostService $postService;
+    public MetaService $metaService;
+
+    public function __construct(PostService $postService, MetaService $metaService)
+    {
+        $this->postService = $postService;
+        $this->metaService = $metaService;
+    }
+
     public function create(): View
     {
-        $categories = Category::all();
-        $tags = Tag::all();
+        $meta = $this->metaService->getCategoriesAndTags();
+
         return view("post/create", [
             "title" => "Create post",
-            "categories" => $categories,
-            "tags" => $tags
+            "categories" => $meta["categories"],
+            "tags" => $meta["tags"],
         ]);
     }
 
     public function edit(Post $post): View
     {
-        $categories = Category::all();
-        $tags = Tag::all();
+        $meta = $this->metaService->getCategoriesAndTags();
         return view("post/edit", [
             "title" => "Edit post",
             "post" => $post,
-            "categories" => $categories,
-            "tags" => $tags
+            "categories" => $meta["categories"],
+            "tags" => $meta["tags"],
         ]);
     }
 
@@ -55,22 +68,13 @@ class PostController extends Controller
     public function index(FilterRequest $request): View
     {
         $validated = $request->validated();
-        $query = Post::query();
 
-        if (isset($validated["is_published"])) {
-            $query->where("is_published", $validated["is_published"]);
-        }
-
-        if (isset($validated["category_id"])) {
-            $query->where("category_id", $validated["category_id"]);
-        }
-
-        $posts = $query->paginate(10);
-        $categories = Category::all();
+        $posts = $this->postService->index($validated);
+        $meta = $this->metaService->getCategoriesAndTags();
 
         return view("post/index", [
             "posts" => $posts,
-            "categories" => $categories,
+            "categories" => $meta["categories"],
             "title" => "All posts",
         ]);
     }
@@ -79,13 +83,7 @@ class PostController extends Controller
     {
         $validated = $request->validated();
 
-        $post = Post::create($validated);
-
-        // https://stackoverflow.com/questions/23968415/laravel-eloquent-attach-vs-sync
-        // Обновляет записи в post_tags
-        if (!empty($validated["tag_ids"])) {
-            $post->tags()->sync($validated["tag_ids"]);
-        }
+        $post = $this->postService->store($validated);
 
         return redirect()->route("posts.show", [
             "post" => $post
@@ -96,10 +94,7 @@ class PostController extends Controller
     {
         $validated = $request->validated();
 
-        $post->update($validated);
-        // Помню, что валидатор конвертит пустые значения в null, поэтому добавляю
-        //  ?? [], чтобы не было ошибок и данные корректно записались
-        $post->tags()->sync($validated["tag_ids"] ?? []);
+        $this->postService->update($validated, $post);
 
         return redirect()->route("posts.show", [
             "post" => $post->id
