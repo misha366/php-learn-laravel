@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\PostDTO;
 use App\Http\Requests\Post\FilterRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
-use App\Models\Category;
 use App\Models\Post;
-use App\Models\Tag;
 use App\Services\MetaService;
 use App\Services\PostService;
 use Illuminate\Http\RedirectResponse;
@@ -81,9 +80,8 @@ class PostController extends Controller
 
     public function store(StoreRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $post = $this->postService->store($validated);
+        $postDTO = PostDTO::fromArray($request->validated());
+        $post = $this->postService->store($postDTO);
 
         return redirect()->route("posts.show", [
             "post" => $post
@@ -92,9 +90,7 @@ class PostController extends Controller
 
     public function update(UpdateRequest $request, Post $post): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $this->postService->update($validated, $post);
+        $this->postService->update(PostDTO::fromArray($request->validated()), $post);
 
         return redirect()->route("posts.show", [
             "post" => $post->id
