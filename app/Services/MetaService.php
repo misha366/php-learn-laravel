@@ -2,21 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\Category;
-use App\Models\Tag;
+use App\Repository\Meta\MetaRepositoryInterface;
 
 class MetaService
 {
-    // Мета - данные связанные с постами, но постами не являющиеся
+    private MetaRepositoryInterface $metaRepository;
+
+    public function __construct(MetaRepositoryInterface $metaRepository)
+    {
+        $this->metaRepository = $metaRepository;
+    }
 
     public function getCategoriesAndTags() : array {
-        $categories = Category::all();
-        $tags = Tag::all();
-
-        return [
-            "categories" => $categories,
-            "tags" => $tags
-        ];
+        return $this->metaRepository->getCategoriesAndTags();
     }
 
 }
