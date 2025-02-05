@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\About\IndexController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -20,8 +21,7 @@ Route::get("/", [MainController::class, "index"])->name("main.home");
 Route::group(["namespace" => ""], function () {
     Route::get("/about", IndexController::class)->name("about.index");
 });
-// Гайд на роуты:
-// https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers
+Route::get("/admin", [AdminController::class, "index"])->name("admin.index");
 
 // CREATE
 Route::get("/posts/create", [PostController::class, "create"])->name("posts.create");
