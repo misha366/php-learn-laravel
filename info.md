@@ -84,10 +84,6 @@ public function createPost(Request $request) : JsonResponse {
         "image" => "nullable|string"
     ]);
 ```
-
-#### Bootstrap
-https://www.youtube.com/watch?v=sdpaqoveghk&list=PLd2_Os8Cj3t8pnG4ubQemoqnTwf0VFEtU&index=17
-
 #### Laravel соглашение по неймингу роутов
 https://laravel.com/docs/11.x/controllers#actions-handled-by-resource-controllers
 
@@ -171,3 +167,24 @@ P. S. т. е. не надо выносить абсолютно всё в сер
 ],
 ```
 Логи будут в storage/logs
+
+#### Bootstrap
+> npm install bootstrap @popperjs/core
+
+resources/js/app.js
+```
+import 'bootstrap';
+import '../css/app.css';
+```
+
+resources/css/app.css
+```
+@import "bootstrap/dist/css/bootstrap.min.css";
+```
+
+```
+<title>Laravel</title>
+@vite(['resources/js/app.js'])
+```
+
+`npm run dev`
