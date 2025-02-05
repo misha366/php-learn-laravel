@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\PostDTO;
-use App\Http\Requests\Post\FilterRequest;
+use App\Http\Requests\Post\IndexRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
@@ -48,14 +48,6 @@ class PostController extends Controller
         ]);
     }
 
-    // Вместо такого подхода можно писать более короткий вариант
-    // В таком случае мы должны будем вместо int id принимать в роуте post
-    // и сам ларавел в аргумент будет подтягивать нам post
-
-    // Сама переменная $post принимает любое значение, но подтягивать запись
-    // она будет только если мы передали валидный id (findOrFail)
-//    public function show(int $id) : View {
-//        $post = Post::findOrFail($id);
     public function show(Post $post): View
     {
         return view("post/show", [
@@ -64,11 +56,14 @@ class PostController extends Controller
         ]);
     }
 
-    public function index(FilterRequest $request): View
+    public function index(IndexRequest $request): View
     {
-        $validated = $request->validated();
+        $params = $request->validated();
 
-        $posts = $this->postService->index($validated);
+        $posts = $this->postService->getPaginatedAndFilteredPosts(
+            $params["is_published"] ?? null,
+            $params["category_id"] ?? null
+        );
         $meta = $this->metaService->getCategoriesAndTags();
 
         return view("post/index", [

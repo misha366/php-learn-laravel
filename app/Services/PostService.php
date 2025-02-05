@@ -8,16 +8,16 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostService
 {
-    public function index(array $data): LengthAwarePaginator
+    public function getPaginatedAndFilteredPosts(?bool $isPublished, ?int $categoryId): LengthAwarePaginator
     {
         $query = Post::query();
 
-        if (isset($data["is_published"])) {
-            $query->where("is_published", $data["is_published"]);
+        if (isset($isPublished)) {
+            $query->where("is_published", $isPublished);
         }
 
-        if (isset($data["category_id"])) {
-            $query->where("category_id", $data["category_id"]);
+        if (isset($categoryId)) {
+            $query->where("category_id", $categoryId);
         }
 
         return $query->paginate(10);
