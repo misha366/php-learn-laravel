@@ -4,44 +4,34 @@ namespace App\Services;
 
 use App\DTO\PostDTO;
 use App\Models\Post;
+use App\Repository\Post\PostRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostService
 {
+    private PostRepositoryInterface $postRepository;
+
+    public function __construct(PostRepositoryInterface $postRepository)
+    {
+        $this->postRepository = $postRepository;
+    }
+
     public function getPaginatedAndFilteredPosts(?bool $isPublished, ?int $categoryId): LengthAwarePaginator
     {
-        $query = Post::query();
-
-        if (isset($isPublished)) {
-            $query->where("is_published", $isPublished);
-        }
-
-        if (isset($categoryId)) {
-            $query->where("category_id", $categoryId);
-        }
-
-        return $query->paginate(10);
+        return $this->postRepository->getPaginatedAndFilteredPosts($isPublished, $categoryId);
     }
 
     public function store(PostDTO $postDTO): Post
     {
-        $post = Post::create(PostDTO::toArray($postDTO));
-
-        // https://stackoverflow.com/questions/23968415/laravel-eloquent-attach-vs-sync
-        // Обновляет записи в post_tags
-        if (!empty($postDTO->getTagIds())) {
-            $post->tags()->sync($postDTO->getTagIds());
-        }
-
-        return $post;
+        return $this->postRepository->store($postDTO);
     }
 
     public function update(PostDTO $postDTO, Post $post): Post
     {
-        $post->update(PostDTO::toArray($postDTO));
-        // Помню, что валидатор конвертит пустые значения в null, поэтому добавляю
-        //  ?? [], чтобы не было ошибок и данные корректно записались
-        $post->tags()->sync($postDTO->getTagIds() ?? []);
-        return $post;
+        return $this->postRepository->update($postDTO, $post);
+    }
+
+    public function destroy(Post $post): void {
+        $this->postRepository->destroy($post);
     }
 }
