@@ -188,3 +188,19 @@ resources/css/app.css
 ```
 
 `npm run dev`
+
+#### Jetstream auth
+```
+composer require laravel/jetstream
+php artisan jetstream:install livewire
+npm install && npm run dev
+php artisan migrate
+```
+
+Чтобы удалить tailwind, который подтягивает jetstream надо
+1. Редактировать `app.css`, его изменит jetstream, добавив tailwind
+2. > npm uninstall tailwindcss
+3. `tailwind.config.js` - удалить
+4. > npm install
+5. > npm run build --force
+6. > npm run dev

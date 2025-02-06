@@ -37,3 +37,13 @@ Route::patch("/posts/{post}", [PostController::class, "update"])->name("posts.up
 
 // DELETE
 Route::delete("/posts/{post}", [PostController::class, "destroy"])->name("posts.destroy");
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});

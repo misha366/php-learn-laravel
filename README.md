@@ -1,6 +1,7 @@
 # php-learn-laravel
 
 adminlte 3.14.3
+jetstream 4.3.1
 
 ### Models
 <b>Post</b>
