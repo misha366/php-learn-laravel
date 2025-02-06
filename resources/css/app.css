@@ -2,6 +2,7 @@
 
 @font-face {
     font-family: "Montserrat";
+    /*noinspection CssUnknownTarget*/
     src: url("/fonts/Montserrat-VariableFont_wght.ttf") format("truetype"),
     url("/fonts/Montserrat-Italic-VariableFont_wght.ttf") format("truetype");
     font-weight: 500;
@@ -119,4 +120,59 @@ nav ul li a:hover {
 .no-posts-capture {
     color: var(--bs-warning);
     text-align: center;
+}
+
+
+.menu__button-user {
+    position: fixed;
+    padding-bottom: 14px;
+    top: 100px;
+    left: 0;
+    transform: translateX(-40%) rotate(90deg);
+    transition: .4s ease;
+}
+
+.menu__button-user:hover {
+    background: var(--bs-primary);
+    transform: translateX(-38%) rotate(90deg);
+}
+
+.menu__line {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 5px;
+}
+
+.menu__button-admin {
+    position: fixed;
+    padding-bottom: 14px;
+    top: 235px;
+    left: 0;
+    transform: translateX(-40%) rotate(90deg);
+    transition: .4s ease;
+}
+
+.menu__button-admin:hover {
+    background: var(--bs-danger);
+    transform: translateX(-38%) rotate(90deg);
+}
+
+.offcanvas__profile-photo {
+    height: 70px;
+    width: 70px;
+    display: inline-block;
+    margin-right: 1rem;
+    border-radius: 50%;
+}
+
+.offcanvas__auth-link {
+    color: inherit;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.offcanvas__auth-link:hover {
+    opacity: .75;
 }

@@ -3,6 +3,8 @@
 adminlte 3.14.3
 jetstream 4.3.1
 
+last commit before auth: https://github.com/misha366/php-learn-laravel/tree/80e8e449579e032055dd3d4997e01f34e137f34c
+
 ### Models
 <b>Post</b>
 ```plaintext
