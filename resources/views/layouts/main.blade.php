@@ -38,6 +38,39 @@
         </div>
     @endif
 
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+        Открыть меню
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasMenuLabel">Меню пользователя</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="d-flex align-items-center mb-3">
+                <img src="https://via.placeholder.com/50" alt="Аватарка" class="rounded-circle me-3">
+                <div>
+                    <h6 class="mb-0">Имя пользователя</h6>
+                    <small class="text-muted">user@email.com</small>
+                </div>
+            </div>
+            <ul class="list-group mb-3">
+                <li class="list-group-item"><i class="bi bi-house-door me-2"></i> Главная</li>
+                <li class="list-group-item"><i class="bi bi-person me-2"></i> Профиль</li>
+                <li class="list-group-item"><i class="bi bi-gear me-2"></i> Настройки</li>
+                <li class="list-group-item"><i class="bi bi-box-arrow-right me-2"></i> Выйти</li>
+            </ul>
+            <div class="mt-auto">
+                <small class="text-muted">Версия 1.0.0</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Icons для иконок -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+
     <div class="row">
         @yield("content")
     </div>
