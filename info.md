@@ -189,6 +189,10 @@ resources/css/app.css
 
 `npm run dev`
 
+#### Seeder
+> php artisan make:refresh
+> php artisan db:seed
+
 #### Jetstream auth
 ```
 composer require laravel/jetstream
