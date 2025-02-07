@@ -195,10 +195,8 @@ resources/css/app.css
 
 #### Удалить fk
 ```php
-$table->foreignId('category_id')
-    ->nullable()
-    ->constrained('categories')
-    ->nullOnDelete();
+$table->dropForeign(['category_id']);
+$table->dropColumn('category_id');
 ```
 
 #### Jetstream auth
