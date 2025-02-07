@@ -193,6 +193,14 @@ resources/css/app.css
 > php artisan make:refresh
 > php artisan db:seed
 
+#### Удалить fk
+```php
+$table->foreignId('category_id')
+    ->nullable()
+    ->constrained('categories')
+    ->nullOnDelete();
+```
+
 #### Jetstream auth
 ```
 composer require laravel/jetstream

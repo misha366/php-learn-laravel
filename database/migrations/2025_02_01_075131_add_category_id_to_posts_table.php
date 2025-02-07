@@ -13,10 +13,10 @@ return new class extends Migration
     {
         // Добавление связи One to Many (category 1 posts n)
         Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->index('category_id', 'post_category_idx');
-            $table->foreign('category_id', 'post_category_fk')
-                ->on('categories')->references('id');
+            $table->foreignId('category_id')
+                ->nullable()
+                ->constrained('categories')
+                ->nullOnDelete();
         });
     }
 
@@ -26,11 +26,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            Schema::table('posts', function (Blueprint $table) {
-                $table->dropForeign('post_category_fk');
-                $table->dropIndex('post_category_idx');
-                $table->dropColumn('category_id');
-            });
+            $table->dropForeign(['category_id']);
+            $table->dropColumn('category_id');
         });
+
     }
 };
