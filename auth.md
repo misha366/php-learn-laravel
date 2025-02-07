@@ -1,5 +1,33 @@
 # Auth implementation
 
+Jetstream routes:
+```plaintext
+GET|HEAD  dashboard                        dashboard
+GET|HEAD  forgot-password                  password.request › PasswordResetLinkController@create
+POST      forgot-password                  password.email › PasswordResetLinkController@store
+GET|HEAD  login                            login › AuthenticatedSessionController@create
+POST      login                            login.store › AuthenticatedSessionController@store
+POST      logout                           logout › AuthenticatedSessionController@destroy
+GET|HEAD  register                         register › RegisteredUserController@create
+POST      register                         register.store › RegisteredUserController@store
+POST      reset-password                   password.update › NewPasswordController@store
+GET|HEAD  reset-password/{token}           password.reset › NewPasswordController@create
+GET|HEAD  two-factor-challenge             two-factor.login › TwoFactorAuthenticatedSessionController@create
+POST      two-factor-challenge             two-factor.login.store › TwoFactorAuthenticatedSessionController@store
+GET|HEAD  user/confirm-password            password.confirm › ConfirmablePasswordController@show
+POST      user/confirm-password            password.confirm.store › ConfirmablePasswordController@store
+GET|HEAD  user/confirmed-password-status   password.confirmation › ConfirmedPasswordStatusController@show
+PUT       user/password                    user-password.update › PasswordController@update
+GET|HEAD  user/profile                     profile.show › UserProfileController@show
+PUT       user/profile-information         user-profile-information.update › ProfileInformationController@update
+POST      user/two-factor-authentication   two-factor.enable › TwoFactorAuthenticationController@store
+DELETE    user/two-factor-authentication   two-factor.disable › TwoFactorAuthenticationController@destroy
+GET|HEAD  user/two-factor-qr-code          two-factor.qr-code › TwoFactorQrCodeController@show
+GET|HEAD  user/two-factor-recovery-codes   two-factor.recovery-codes › RecoveryCodeController@index
+POST      user/two-factor-recovery-codes   RecoveryCodeController@store
+GET|HEAD  user/two-factor-secret-key       two-factor.secret-key › TwoFactorSecretKeyController@show
+```
+
 ### 1. Добавить кастомные роли
 
 - Создать таблицу ролей
@@ -110,3 +138,45 @@ $this->call([
     UserSeeder::class
 ]);
 ```
+
+### 2. Кастомизировать auth страницы
+Основные страницы:
+
+`auth/login.blade.php` — Страница входа
+`auth/register.blade.php` — Страница регистрации
+`auth/forgot-password.blade.php` — Восстановление пароля
+
+Страницы надо будет переписывать, надо смотреть в таблицу роутов и там
+где GET запрос переписывать страничку под свои стили.
+
+Если же какой то функционал излишний данный роут следует просто отключить.
+
+Базовые бутстрап шаблоны под каждый роут:
+0. [auth layout](#)
+1. [Login](#)
+2. [Register]
+
+// пока что не исполнять всё что снизу
+
+Удалять:
+`View/Components`
+
+`components/`
+
+``
+
+Лучше пусть висит, тк в будущем можно заюзать:
+`emails/`
+
+`api/`
+
+(роуты скрыты)
+
+`policy.blade.php`
+
+`terms.blade.php`
+
+
+Нужно удалить папку View/Components с `AppLayout.php` и `GuestLayout.php`.
+Дальше нужно удалить все лейауты и не нужные компоненты.
+

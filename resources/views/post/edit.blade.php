@@ -6,7 +6,10 @@
         }
     </style>
 
-    <x-error-messages></x-error-messages>
+    <x-error-messages
+        errTitle="Error Post"
+        errSubtitle="Validation Error"
+    ></x-error-messages>
 
     <form
         action="{{ route("posts.update", ["post" => $post->id]) }}"
