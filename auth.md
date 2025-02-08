@@ -149,12 +149,54 @@ $this->call([
 Страницы надо будет переписывать, надо смотреть в таблицу роутов и там
 где GET запрос переписывать страничку под свои стили.
 
-Если же какой то функционал излишний данный роут следует просто отключить.
+Если же какой-то функционал излишний данный роут следует просто отключить.
 
 Базовые бутстрап шаблоны под каждый роут:
-0. [auth layout](#)
-1. [Login](#)
-2. [Register]
+1. [auth layout](#)
+2. [Login](#)
+3. [Register](#)
+4. [Dashboard](https://gist.github.com/misha366/7765c9142deaff2ae637b175f6272c89)
+   - Dashboard юзлесс, полностью вырезаем из программы, всё редиректим на страницу профиля
+   - Из класса web.php удалить маршрут на /dashboard:
+    ```php
+    // Помимо того что уберёт роут ещё и удалит из листа роутов
+    Route::middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ])->group(function () {
+    //    Route::get('/dashboard', function () {
+    //        return view('dashboard');
+    //    })->name('dashboard');
+    });
+    ```
+    - Меняем хоум роут в конфигурациях (fortify.php, RouteServiceProvider):
+    ```php
+    'home' => '/dashboard', (было)
+        |
+       \|/
+    'home' => '/user/profile', (стало)
+    ```
+
+    ```php
+    public const HOME = '/dashboard';, (было)
+        |
+       \|/
+    public const HOME = '/user/profile';, (стало)
+    ```
+
+    - Удаляем `dashboard.blade.php`
+    - Удаляем из `navigation-menu.blade.php` упоминание dashboard
+    - Чистим кеш, проверяем роуты
+    ```plaintext
+    php artisan config:clear
+    php artisan cache:clear
+    php artisan route:clear
+    
+    php artisan route:list
+    ```
+5. Profile...
+
 
 // пока что не исполнять всё что снизу
 
@@ -179,4 +221,5 @@ $this->call([
 
 Нужно удалить папку View/Components с `AppLayout.php` и `GuestLayout.php`.
 Дальше нужно удалить все лейауты и не нужные компоненты.
+
 
