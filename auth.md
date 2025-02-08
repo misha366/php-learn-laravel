@@ -195,7 +195,11 @@ $this->call([
     
     php artisan route:list
     ```
-5. Profile...
+5. [Profile](https://github.com/misha366/php-learn-laravel/tree/master/resources/views/post)
+Завершение всех сессий, кроме основной работает 
+
+Как включать/выключать 2х факторную аутентификацию?
+Как загружать картинки?
 
 
 // пока что не исполнять всё что снизу
