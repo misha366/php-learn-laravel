@@ -96,8 +96,11 @@
 
 {{-- /AUTH CANVAS --}}
 
-<div class="row">
+<div style="display: none" class="row page">
     @yield("content")
 </div>
+
+<x-preloader></x-preloader>
+
 </body>
 </html>

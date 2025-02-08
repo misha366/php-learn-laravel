@@ -14,8 +14,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body class="container">
-<div class="row">
+<div style="display: none" class="page row">
     @yield("content")
 </div>
+
+<x-preloader></x-preloader>
+
 </body>
 </html>
