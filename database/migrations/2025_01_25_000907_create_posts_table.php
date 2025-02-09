@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string("image")->nullable();
             $table->unsignedBigInteger("likes")->default(0);
             $table->boolean("is_published")->default(false);
+            $table->foreignId("user_id")
+                ->nullable()
+                ->constrained("users")
+                ->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
