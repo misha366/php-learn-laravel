@@ -1,5 +1,8 @@
 # Auth implementation
 
+Юзать Jetstream на проектах не надо, это буквально одина из худших библиотек по аутентификации
+
+
 Jetstream routes:
 ```plaintext
 GET|HEAD  dashboard                        dashboard
@@ -195,10 +198,9 @@ $this->call([
     
     php artisan route:list
     ```
-5. [Profile](https://github.com/misha366/php-learn-laravel/tree/master/resources/views/post)
+5. [Profile](https://github.com/misha366/php-learn-laravel/tree/00e0fc8006afcb8af479f0f7e0774005ebe86ee4/resources/views/profile)
 Завершение всех сессий, кроме основной работает 
 
-Как включать/выключать 2х факторную аутентификацию?
 Как загружать картинки?
 
 С коробки на странице профиля есть неисправный блок - менеджмент сессий,
