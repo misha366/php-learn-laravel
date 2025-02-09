@@ -29,6 +29,7 @@
                 </p>
 
                 <p><strong>Likes:</strong> {{ $post->likes }}</p>
+                <p><strong>Author:</strong> {{ $post->author->name ?? "No author" }}</p>
                 <p><strong>Status:</strong>
                     <span class="badge {{ $post->is_published ? "bg-success" : "bg-danger" }}">
                         {{ $post->is_published ? "Published" : "Not published" }}
