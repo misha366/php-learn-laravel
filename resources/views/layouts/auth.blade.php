@@ -18,7 +18,7 @@
     @yield("content")
 </div>
 
-<x-preloader></x-preloader>
+<x-common.preloader></x-common.preloader>
 
 </body>
 </html>

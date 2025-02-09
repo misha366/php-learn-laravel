@@ -31,13 +31,6 @@
             </div>
         @endif
 
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">{{ __('Logout Other Browser Sessions') }}</div>
-            <div class="card-body">
-                @livewire('profile.logout-other-browser-sessions-form')
-            </div>
-        </div>
-
         @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
             <div class="card mb-4">
                 <div class="card-header bg-danger text-white">{{ __('Delete Account') }}</div>

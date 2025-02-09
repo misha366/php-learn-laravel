@@ -1,9 +1,9 @@
 @extends("layouts.auth")
 @section("content")
-    <x-error-messages
+    <x-errors.error-messages
         errTitle="Failed register"
         errSubtitle="Auth error"
-    ></x-error-messages>
+    ></x-errors.error-messages>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
