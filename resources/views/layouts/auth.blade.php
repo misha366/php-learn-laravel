@@ -15,6 +15,12 @@
 </head>
 <body class="container">
 <div style="display: none" class="page row">
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="btn btn-danger">
+            Logout
+        </button>
+    </form>
     @yield("content")
 </div>
 

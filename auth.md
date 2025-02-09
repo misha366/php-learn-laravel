@@ -155,10 +155,7 @@ $this->call([
 Если же какой-то функционал излишний данный роут следует просто отключить.
 
 Базовые бутстрап шаблоны под каждый роут:
-1. [auth layout](#)
-2. [Login](#)
-3. [Register](#)
-4. [Dashboard](https://gist.github.com/misha366/7765c9142deaff2ae637b175f6272c89)
+1. [Dashboard](https://gist.github.com/misha366/7765c9142deaff2ae637b175f6272c89)
    - Dashboard юзлесс, полностью вырезаем из программы, всё редиректим на страницу профиля
    - Из класса web.php удалить маршрут на /dashboard:
     ```php
@@ -198,9 +195,7 @@ $this->call([
     
     php artisan route:list
     ```
-5. [Profile](https://github.com/misha366/php-learn-laravel/tree/00e0fc8006afcb8af479f0f7e0774005ebe86ee4/resources/views/profile)
-Завершение всех сессий, кроме основной работает 
-
+2. [Profile](https://github.com/misha366/php-learn-laravel/tree/00e0fc8006afcb8af479f0f7e0774005ebe86ee4/resources/views/profile)
 Как загружать картинки?
 
 С коробки на странице профиля есть неисправный блок - менеджмент сессий,
@@ -212,6 +207,7 @@ $this->call([
 ```
 - Удалить `profile/logout-other-browser-sessions-form.blade.php`
 
+3. [Auth pages](#)
 
 // пока что не исполнять всё что снизу
 
