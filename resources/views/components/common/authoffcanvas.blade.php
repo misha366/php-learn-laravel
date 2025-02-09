@@ -1,7 +1,7 @@
 
 @php
     $isAuthorized = Auth::check();
-    $isAdmin = auth()->user()->role->name === "ROLE_ADMIN";
+    $isAdmin = auth()->user()?->role->name === "ROLE_ADMIN";
 @endphp
 
 <button class="menu__button-user btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
