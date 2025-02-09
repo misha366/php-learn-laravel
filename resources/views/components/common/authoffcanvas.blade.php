@@ -1,7 +1,7 @@
 
 @php
     $isAuthorized = Auth::check();
-    $isAdmin = auth()->user()?->role->name === "ROLE_ADMIN";
+    $isAdmin = $isAuthorized && auth()->user()->role->name === "ROLE_ADMIN";
 @endphp
 
 <button class="menu__button-user btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
@@ -9,7 +9,7 @@
     User Menu
 </button>
 @if($isAuthorized && $isAdmin)
-    <a href="#" class="menu__button-admin btn btn-danger">
+    <a href="{{ route("admin.index") }}" class="menu__button-admin btn btn-danger">
         Admin Panel
     </a>
 @endif

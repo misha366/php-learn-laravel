@@ -1,5 +1,5 @@
 @php
-    $isAuthorOrHigher = in_array(auth()->user()?->role->name, ["ROLE_AUTHOR", "ROLE_ADMIN"]);
+    $isAuthorOrHigher = Auth::check() && in_array(auth()->user()->role->name, ["ROLE_AUTHOR", "ROLE_ADMIN"]);
 @endphp
 
 @if($isAuthorOrHigher)
