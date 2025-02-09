@@ -176,3 +176,29 @@ nav ul li a:hover {
 .offcanvas__auth-link:hover {
     opacity: .75;
 }
+
+.sideoptions {
+    padding: 0;
+    position: fixed;
+    left: 10px;
+    bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 90px;
+    z-index: 100;
+}
+
+.sideoptions__form {
+    margin-bottom: 10px;
+}
+
+.sideoptions__form, .sideoptions__form button, .sideoptions__link {
+    width: 100%;
+    display: inline-block;
+}
+
+.offcanvas__auth-button {
+    background: transparent;
+    border: 0;
+    padding: 0;
+}

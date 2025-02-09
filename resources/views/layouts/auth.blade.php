@@ -15,12 +15,20 @@
 </head>
 <body class="container">
 <div style="display: none" class="page row">
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="btn btn-danger">
-            Logout
-        </button>
-    </form>
+
+    @if(Auth::check())
+        <div class="sideoptions">
+            <form class="sideoptions__form" method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    Logout
+                </button>
+            </form>
+            <a href="{{ route("posts.index") }}" class="sideoptions__link btn btn-primary">
+                Posts
+            </a>
+        </div>
+    @endif
     @yield("content")
 </div>
 

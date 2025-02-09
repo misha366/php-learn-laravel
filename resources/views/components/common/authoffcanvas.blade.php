@@ -1,7 +1,7 @@
 
 @php
-    $isAuthorized = true;
-    $isAdmin = false;
+    $isAuthorized = Auth::check();
+    $isAdmin = auth()->user()->role->name === "ROLE_ADMIN";
 @endphp
 
 <button class="menu__button-user btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
@@ -32,15 +32,21 @@
                     class="offcanvas__profile-photo"
                 >
                 <div>
-                    <h6 class="mb-0">Имя пользователя</h6>
-                    <small class="text-muted">user@email.com</small>
+                    <h6 class="mb-0">{{ auth()->user()->name }}</h6>
+                    <small class="text-muted">{{ auth()->user()->email }}</small>
                 </div>
             </div>
             <ul class="list-group mb-3">
-                <li class="list-group-item"><a class="offcanvas__auth-link" href=""><i class="bi bi-house-door me-2"></i> Главная</a></li>
-                <li class="list-group-item"><a class="offcanvas__auth-link" href=""><i class="bi bi-person me-2"></i> Профиль</a></li>
-                <li class="list-group-item"><a class="offcanvas__auth-link" href=""><i class="bi bi-gear me-2"></i> Настройки</a></li>
-                <li class="list-group-item"><a class="offcanvas__auth-link" href=""><i class="bi bi-box-arrow-right me-2"></i> Выйти</a></li>
+                <li class="list-group-item"><a class="offcanvas__auth-link" href="{{ route("main.home") }}"><i class="bi bi-house-door me-2"></i> Главная</a></li>
+                <li class="list-group-item"><a class="offcanvas__auth-link" href="{{ route("profile.show") }}"><i class="bi bi-person me-2"></i> Профиль</a></li>
+                <li class="list-group-item">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="offcanvas__auth-button">
+                                <i class="bi bi-box-arrow-right me-2"></i> Выйти
+                        </button>
+                    </form>
+                </li>
             </ul>
             <div class="mt-auto">
                 <small class="text-muted">Версия 1.0.0</small>
@@ -48,8 +54,8 @@
         </div>
     @else
         <div class="p-5 d-flex justify-content-center align-items-center flex-column h-100">
-            <a class="mb-3 btn btn-primary w-100" href="#">Login</a>
-            <a class="btn btn-outline-primary w-100" href="#">Sign Up</a>
+            <a class="mb-3 btn btn-primary w-100" href="{{ route("login") }}">Login</a>
+            <a class="btn btn-outline-primary w-100" href="{{ route("register") }}">Sign Up</a>
         </div>
     @endif
 </div>
