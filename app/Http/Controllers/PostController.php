@@ -21,42 +21,35 @@ class PostController extends Controller
     // и уже в нём создавать инстанс сервиса
     public PostService $postService;
     public MetaService $metaService;
-    public AuthService $authService;
 
-    public function __construct(PostService $postService, MetaService $metaService, AuthService $authService)
+    public function __construct(PostService $postService, MetaService $metaService)
     {
         $this->postService = $postService;
         $this->metaService = $metaService;
-        $this->authService = $authService;
     }
 
     public function create(): View
     {
+        $this->authorize('create-post');
         $meta = $this->metaService->getCategoriesAndTags();
 
-        return $this->authService->hasAbilityTo(
-            'create-post',
-            view("post/create", [
-                "title" => "Create post",
-                "categories" => $meta["categories"],
-                "tags" => $meta["tags"],
-            ])
-        );
+        return view("post/create", [
+            "title" => "Create post",
+            "categories" => $meta["categories"],
+            "tags" => $meta["tags"],
+        ]);
     }
 
-    public function edit(Post $post): View|RedirectResponse
+    public function edit(Post $post): View
     {
+        $this->authorize('update-post', $post);
         $meta = $this->metaService->getCategoriesAndTags();
-        return $this->authService->hasAbilityToInteractWithPost(
-            'update-post',
-            view("post/edit", [
-                "title" => "Edit post",
-                "post" => $post,
-                "categories" => $meta["categories"],
-                "tags" => $meta["tags"],
-            ]),
-            $post
-        );
+        return view("post/edit", [
+            "title" => "Edit post",
+            "post" => $post,
+            "categories" => $meta["categories"],
+            "tags" => $meta["tags"],
+        ]);
     }
 
     public function show(Post $post): View
@@ -86,37 +79,29 @@ class PostController extends Controller
 
     public function store(StoreRequest $request): RedirectResponse
     {
+        $this->authorize('create-post');
         $postDTO = PostDTO::fromArray($request->validated());
         $post = $this->postService->store($postDTO);
 
-        return $this->authService->hasAbilityTo(
-            'create-post',
-            redirect()->route("posts.show", [
-                "post" => $post
-            ])
-        );
+        return redirect()->route("posts.show", [
+            "post" => $post
+        ]);
     }
 
     public function update(UpdateRequest $request, Post $post): RedirectResponse
     {
+        $this->authorize('update-post', $post);
         $this->postService->update(PostDTO::fromArray($request->validated()), $post);
 
-        return $this->authService->hasAbilityToInteractWithPost(
-            'update-post',
-            redirect()->route("posts.show", [
-                "post" => $post->id
-            ]),
-            $post
-        );
+        return redirect()->route("posts.show", [
+            "post" => $post->id
+        ]);
     }
 
     public function destroy(Post $post): RedirectResponse
     {
+        $this->authorize('delete-post', $post);
         $this->postService->destroy($post);
-        return $this->authService->hasAbilityToInteractWithPost(
-            'delete-post',
-            redirect()->route("posts.index"),
-            $post
-        );
+        return redirect()->route("posts.index");
     }
 }

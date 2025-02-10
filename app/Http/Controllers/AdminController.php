@@ -9,25 +9,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
-class AdminController
+class AdminController extends Controller
 {
     private PostService $postService;
-    private AuthService $authService;
 
-    public function __construct(PostService $postService, AuthService $authService)
+    public function __construct(PostService $postService)
     {
         $this->postService = $postService;
-        $this->authService = $authService;
     }
 
     public function index(): View|RedirectResponse
     {
+        $this->authorize('access-admin');
         $posts = $this->postService->getPaginatedAndFilteredPosts(null, null);
-        return $this->authService->hasAbilityTo(
-            'access-admin',
-            view("admin.index", [
+        return view("admin.index", [
                 "posts" => $posts,
-            ])
-        );
+            ]);
     }
 }
