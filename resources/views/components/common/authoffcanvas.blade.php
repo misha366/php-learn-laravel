@@ -1,25 +1,19 @@
-
-@php
-    $isAuthorized = Auth::check();
-    $isAdmin = $isAuthorized && auth()->user()->role->name === "ROLE_ADMIN";
-@endphp
-
 <button class="menu__button-user btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
         aria-controls="offcanvasMenu">
     User Menu
 </button>
-@if($isAuthorized && $isAdmin)
+@can('access-admin')
     <a href="{{ route("admin.index") }}" class="menu__button-admin btn btn-danger">
         Admin Panel
     </a>
 @endif
 
-<span class="menu__line {{ $isAuthorized &&  $isAdmin ? "bg-danger" : "bg-primary" }}"></span>
+<span class="menu__line {{ Gate::allows('access-admin') ? "bg-danger" : "bg-primary" }}"></span>
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
 
 
-    @if($isAuthorized)
+    @if(Auth::check())
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasMenuLabel">Меню пользователя</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>

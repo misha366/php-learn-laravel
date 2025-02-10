@@ -7,9 +7,11 @@ use App\Http\Requests\Post\IndexRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
+use App\Services\AuthService;
 use App\Services\MetaService;
 use App\Services\PostService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -19,33 +21,42 @@ class PostController extends Controller
     // и уже в нём создавать инстанс сервиса
     public PostService $postService;
     public MetaService $metaService;
+    public AuthService $authService;
 
-    public function __construct(PostService $postService, MetaService $metaService)
+    public function __construct(PostService $postService, MetaService $metaService, AuthService $authService)
     {
         $this->postService = $postService;
         $this->metaService = $metaService;
+        $this->authService = $authService;
     }
 
     public function create(): View
     {
         $meta = $this->metaService->getCategoriesAndTags();
 
-        return view("post/create", [
-            "title" => "Create post",
-            "categories" => $meta["categories"],
-            "tags" => $meta["tags"],
-        ]);
+        return $this->authService->hasAbilityTo(
+            'create-post',
+            view("post/create", [
+                "title" => "Create post",
+                "categories" => $meta["categories"],
+                "tags" => $meta["tags"],
+            ])
+        );
     }
 
-    public function edit(Post $post): View
+    public function edit(Post $post): View|RedirectResponse
     {
         $meta = $this->metaService->getCategoriesAndTags();
-        return view("post/edit", [
-            "title" => "Edit post",
-            "post" => $post,
-            "categories" => $meta["categories"],
-            "tags" => $meta["tags"],
-        ]);
+        return $this->authService->hasAbilityToInteractWithPost(
+            'update-post',
+            view("post/edit", [
+                "title" => "Edit post",
+                "post" => $post,
+                "categories" => $meta["categories"],
+                "tags" => $meta["tags"],
+            ]),
+            $post
+        );
     }
 
     public function show(Post $post): View
@@ -78,23 +89,34 @@ class PostController extends Controller
         $postDTO = PostDTO::fromArray($request->validated());
         $post = $this->postService->store($postDTO);
 
-        return redirect()->route("posts.show", [
-            "post" => $post
-        ]);
+        return $this->authService->hasAbilityTo(
+            'create-post',
+            redirect()->route("posts.show", [
+                "post" => $post
+            ])
+        );
     }
 
     public function update(UpdateRequest $request, Post $post): RedirectResponse
     {
         $this->postService->update(PostDTO::fromArray($request->validated()), $post);
 
-        return redirect()->route("posts.show", [
-            "post" => $post->id
-        ]);
+        return $this->authService->hasAbilityToInteractWithPost(
+            'update-post',
+            redirect()->route("posts.show", [
+                "post" => $post->id
+            ]),
+            $post
+        );
     }
 
     public function destroy(Post $post): RedirectResponse
     {
         $this->postService->destroy($post);
-        return redirect()->route("posts.index");
+        return $this->authService->hasAbilityToInteractWithPost(
+            'delete-post',
+            redirect()->route("posts.index"),
+            $post
+        );
     }
 }

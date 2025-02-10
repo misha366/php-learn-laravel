@@ -12,14 +12,11 @@
             <h3 class="no-posts-capture">No posts</h3>
         @endif
         @foreach($posts as $post)
-            @php
-                $isUserAuthor = Auth::check() && $post->author?->id === auth()->user()->id;
-            @endphp
             <h3 class="post__title">
                 <a href="{{ route("posts.show", ["post" => $post->id]) }}">
                     #{{ $post->id }} {{ $post->title }}
                 </a>
-                @if($isUserAuthor)
+                @can('update-post', $post)
                 <a href="{{ route("posts.edit", ["post" => $post->id]) }}" class="post__link-edit">
                     <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="edit">
                 </a>
@@ -36,7 +33,7 @@
                         </svg>
                     </button>
                 </form>
-                @endif
+                @endcan
             </h3>
             <div class="mb-2">
                 <i class="badge text-bg-primary text-wrap">

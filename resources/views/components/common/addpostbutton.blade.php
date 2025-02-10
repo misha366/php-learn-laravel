@@ -1,8 +1,4 @@
-@php
-    $isAuthorOrHigher = Auth::check() && in_array(auth()->user()->role->name, ["ROLE_AUTHOR", "ROLE_ADMIN"]);
-@endphp
-
-@if($isAuthorOrHigher)
+@can('create-post')
     <div class="float">
         <div class="float__circle btn btn-success">
             <a href="{{ route("posts.create") }}" class="float__link">
@@ -12,4 +8,4 @@
             </a>
         </div>
     </div>
-@endif
+@endcan
