@@ -18,12 +18,12 @@ class AdminController extends Controller
         $this->postService = $postService;
     }
 
-    public function index(): View|RedirectResponse
+    public function index(): View
     {
         $this->authorize('access-admin');
         $posts = $this->postService->getPaginatedAndFilteredPosts(null, null);
-        return view("admin.index", [
-                "posts" => $posts,
-            ]);
+        return view("admin/index", [
+            "posts" => $posts,
+        ]);
     }
 }
